@@ -1,8 +1,5 @@
 # Portfólio — João Pedro
 
-Portfólio pessoal de João Pedro, desenvolvedor FullStack. Identidade visual **"Fronteira"**: western sofisticado,
-no estilo de cartaz de ferrovia e gravura impressa.
-
 Feito com **Angular 22** (standalone, signals, zoneless) e CSS puro. Deploy na Vercel.
 
 ## Rodando
