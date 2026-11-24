@@ -10,6 +10,63 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   </head>
   <body>
+    <!--
+      Tela de carregamento: está aqui (e não num componente) para aparecer no primeiro instante, antes do
+      Angular baixar. Estilo e saída em src/app/presentation/shared/boot-screen/ (a Hero chama dismiss()).
+      Revólver de ação simples olhando para a direita; as balas são desenhadas antes dele para entrarem
+      "por trás" da armação. --dx/--dy levam o centro de cada bala até a traseira do tambor (64, 42).
+    -->
+    <div id="fr-boot" class="fr-boot" role="status" aria-live="polite">
+      <span class="fr-boot-label">Carregando o portfólio…</span>
+      <svg class="fr-boot-art" viewBox="0 0 220 150" aria-hidden="true">
+        <!-- Fila de 6 balas (ponta de chumbo + cartucho de latão) -->
+        <g transform="translate(67 112)"><g class="bullet" style="--i: 0; --dx: -7px; --dy: -81px"><path class="tip" d="M4 0 C6.6 1.6 7 4.6 7 8 H1 C1 4.6 1.4 1.6 4 0Z" /><rect class="case" x="1" y="8.8" width="6" height="11.2" /><rect class="case" x=".3" y="20.4" width="7.4" height="1.6" /></g></g>
+        <g transform="translate(81 112)"><g class="bullet" style="--i: 1; --dx: -21px; --dy: -81px"><path class="tip" d="M4 0 C6.6 1.6 7 4.6 7 8 H1 C1 4.6 1.4 1.6 4 0Z" /><rect class="case" x="1" y="8.8" width="6" height="11.2" /><rect class="case" x=".3" y="20.4" width="7.4" height="1.6" /></g></g>
+        <g transform="translate(95 112)"><g class="bullet" style="--i: 2; --dx: -35px; --dy: -81px"><path class="tip" d="M4 0 C6.6 1.6 7 4.6 7 8 H1 C1 4.6 1.4 1.6 4 0Z" /><rect class="case" x="1" y="8.8" width="6" height="11.2" /><rect class="case" x=".3" y="20.4" width="7.4" height="1.6" /></g></g>
+        <g transform="translate(109 112)"><g class="bullet" style="--i: 3; --dx: -49px; --dy: -81px"><path class="tip" d="M4 0 C6.6 1.6 7 4.6 7 8 H1 C1 4.6 1.4 1.6 4 0Z" /><rect class="case" x="1" y="8.8" width="6" height="11.2" /><rect class="case" x=".3" y="20.4" width="7.4" height="1.6" /></g></g>
+        <g transform="translate(123 112)"><g class="bullet" style="--i: 4; --dx: -63px; --dy: -81px"><path class="tip" d="M4 0 C6.6 1.6 7 4.6 7 8 H1 C1 4.6 1.4 1.6 4 0Z" /><rect class="case" x="1" y="8.8" width="6" height="11.2" /><rect class="case" x=".3" y="20.4" width="7.4" height="1.6" /></g></g>
+        <g transform="translate(137 112)"><g class="bullet" style="--i: 5; --dx: -77px; --dy: -81px"><path class="tip" d="M4 0 C6.6 1.6 7 4.6 7 8 H1 C1 4.6 1.4 1.6 4 0Z" /><rect class="case" x="1" y="8.8" width="6" height="11.2" /><rect class="case" x=".3" y="20.4" width="7.4" height="1.6" /></g></g>
+
+        <!-- Revólver -->
+        <g class="gun">
+          <!-- Clarão do disparo, na boca do cano -->
+          <path class="muzzle" d="M197 29.5 l7 -6 l1 4.5 l9 -2.5 l-5 5 l8 3 l-8.5 2 l4 5.5 l-8 -2.5 l-2 5 l-2 -5.5 z" />
+          <!-- Cano, massa de mira e o tubo da vareta extratora embaixo -->
+          <rect class="ink" x="96" y="24" width="100" height="9.5" rx="1.5" />
+          <path class="ink" d="M186 24 l1.6 -4 h3.2 l1 4 z" />
+          <rect class="ink" x="98" y="33" width="70" height="6.5" rx="3.2" />
+          <circle class="ink" cx="170" cy="36.2" r="3.4" />
+          <!-- Empunhadura (cabo de arado) com a madeira e o parafuso -->
+          <path class="ink" d="M40 38 L64 50 Q60 70 50 86 Q42 100 31 105 Q19 108 17 98 Q15 88 23 76 Q32 62 36 44 Z" />
+          <path class="wood" d="M37 52 L57 58 Q52 74 44 86 Q37 96 29 99 Q23 100 23 93 Q24 85 29 77 Q35 66 37 52 Z" />
+          <circle class="screw" cx="38" cy="78" r="1.6" />
+          <!-- Armação: cinta de cima, bloco de trás, coluna da frente e a base sob o tambor -->
+          <rect class="ink" x="40" y="18.5" width="60" height="7" rx="2" />
+          <rect class="ink" x="40" y="18.5" width="22" height="40" rx="3" />
+          <rect class="ink" x="93" y="18.5" width="7" height="27" />
+          <rect class="ink" x="56" y="52" width="42" height="6" rx="2" />
+          <!-- Guarda-mato e gatilho -->
+          <path class="stroke" stroke-width="3.2" d="M56 58 C55 76 80 77 81 58" />
+          <path class="stroke" stroke-width="2.6" d="M66 58 Q63 64 67 70" />
+          <!-- Tambor: corpo, caneluras que giram (recortadas no próprio tambor) e o recorte claro em volta -->
+          <clipPath id="fr-boot-cyl"><rect x="60" y="24" width="36" height="30" rx="5" /></clipPath>
+          <rect class="ink" x="60" y="24" width="36" height="30" rx="5" />
+          <g clip-path="url(#fr-boot-cyl)">
+            <g class="flutes">
+              <line x1="64" x2="92" y1="15" y2="15" /><line x1="64" x2="92" y1="21.5" y2="21.5" />
+              <line x1="64" x2="92" y1="28" y2="28" /><line x1="64" x2="92" y1="34.5" y2="34.5" />
+              <line x1="64" x2="92" y1="41" y2="41" /><line x1="64" x2="92" y1="47.5" y2="47.5" />
+              <line x1="64" x2="92" y1="54" y2="54" /><line x1="64" x2="92" y1="60.5" y2="60.5" />
+              <line x1="64" x2="92" y1="67" y2="67" />
+            </g>
+          </g>
+          <rect class="cyl-edge" x="60" y="24" width="36" height="30" rx="5" />
+          <!-- Cão (arma e cai no disparo) -->
+          <path class="ink hammer" d="M42 30 H51 L49 19 Q47 12 39 9.5 Q34 9 35.5 12.5 Q41 15 42.5 21 Z" />
+        </g>
+      </svg>
+    </div>
+
     <app-root></app-root>
   </body>
 </html>

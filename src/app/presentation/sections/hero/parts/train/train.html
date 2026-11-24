@@ -1,0 +1,118 @@
+<!--
+  Trilhos, fumaça e trem. Coordenadas do trem: x=0 é a traseira do último vagão e y=0 é o trilho;
+  ele anda para a direita (locomotiva na frente). Planta (x):
+    vagão 0..60 · engate · vagão 66..126 · engate · tênder 132..166 · engate · locomotiva 172..243
+-->
+<svg class="fr-svg fr-back">
+  <g class="a a-rail">
+    <line class="fr-rail" x1="-1440" y1="640" x2="2880" y2="640" />
+    <line class="fr-ties" x1="-1440" y1="642.5" x2="2880" y2="642.5" />
+    <g class="fr-smoke" aria-hidden="true">
+      @for (puff of puffs; track puff) {
+        <circle #puff />
+      }
+    </g>
+
+    <!-- Trem: clicável (Piuí). O mousedown não foca, então o clique não deixa contorno; o teclado sim. -->
+    <g
+      #train
+      class="fr-train"
+      transform="translate(-260 640)"
+      role="button"
+      tabindex="0"
+      aria-label="Trem no horizonte"
+      (mousedown)="$event.preventDefault()"
+      (click)="tootTrain()"
+      (keydown.enter)="tootTrain($event)"
+      (keydown.space)="tootTrain($event)"
+    >
+      <!-- Área de clique invisível, maior que o desenho -->
+      <rect x="-8" y="-44" width="260" height="50" fill="transparent" />
+
+      <!-- Engates: a mesma barra em cada vão de 6 unidades, com um pino no meio -->
+      @for (x of couplers; track x) {
+        <g class="body" [attr.transform]="'translate(' + x + ' 0)'">
+          <rect x="-1" y="-10" width="8" height="1.8" />
+          <rect x="2" y="-11" width="2" height="3.8" rx=".6" />
+        </g>
+      }
+
+      <!-- Vagões de passageiros (60 de largura, simétricos): teto com lanternim, faixa clara,
+           7 janelas acesas com gente sentada em algumas, plataformas com guarda-corpo e 2 truques de rodas -->
+      @for (coach of coaches; track coach.x) {
+        <g [attr.transform]="'translate(' + coach.x + ' 0)'">
+          <g class="body">
+            <rect x="0" y="-24" width="60" height="17" />
+            <rect x="-1.5" y="-27" width="63" height="3" rx="1.5" />
+            <rect x="8" y="-29.5" width="44" height="2.5" rx="1" />
+            <rect x="1" y="-7" width="58" height="2" />
+            <circle cx="9" cy="-2.6" r="2.6" /><circle cx="16" cy="-2.6" r="2.6" />
+            <circle cx="44" cy="-2.6" r="2.6" /><circle cx="51" cy="-2.6" r="2.6" />
+          </g>
+          <!-- Guarda-corpo das plataformas, nas duas pontas -->
+          <path class="rail-line" d="M-1.2 -7 V-15 M61.2 -7 V-15" />
+          @for (x of windows; track $index) {
+            <rect class="win" [attr.x]="x" y="-21" width="4.4" height="6" />
+          }
+          <rect class="win" x="2" y="-12.4" width="56" height=".9" />
+          @for (seat of coach.seated; track seat) {
+            <path
+              class="body"
+              [attr.transform]="'translate(' + windows[seat] + ' -1)'"
+              d="M.6 -14 q0 -1.8 1.6 -1.8 q1.6 0 1.6 1.8z M1.05 -16.2 a1.15 1.15 0 1 0 2.3 0 a1.15 1.15 0 1 0 -2.3 0"
+            />
+          }
+        </g>
+      }
+      <!-- Lanterna traseira, na ponta do último vagão -->
+      <rect class="glow" x="-3.2" y="-22" width="2" height="3" rx=".5" />
+
+      <!-- Tênder (34 de largura, simétrico): caixa com aro, carvão por cima e 2 rodas -->
+      <g class="body">
+        <rect x="132" y="-18" width="34" height="11" />
+        <rect x="131" y="-19.6" width="36" height="2" rx=".8" />
+        <path d="M134 -19.6 Q137 -24.2 141.5 -21.6 Q145.5 -25.4 150.5 -22.2 Q155.5 -25.4 159.5 -21.8 Q163 -23.6 164 -19.6 Z" />
+        <rect x="133" y="-7" width="32" height="2" />
+        <circle cx="140" cy="-2.8" r="2.8" /><circle cx="158" cy="-2.8" r="2.8" />
+      </g>
+
+      <!-- Locomotiva: cabine atrás (junto ao tênder), caldeira com domo, chaminé e farol na frente -->
+      <g class="body">
+        <!-- Cabine -->
+        <rect x="172" y="-31" width="22" height="23" />
+        <rect x="170" y="-33.6" width="26" height="3" rx="1.2" />
+        <!-- Caldeira, domo de vapor e caixa de fumaça -->
+        <path d="M194 -21 H226 Q229.5 -21 229.5 -17.5 V-11.5 Q229.5 -8 226 -8 H194 Z" />
+        <path d="M203 -20.5 Q203 -25.4 207 -25.4 Q211 -25.4 211 -20.5 Z" />
+        <!-- Chaminé de boca larga -->
+        <rect x="217" y="-30" width="5" height="9.5" />
+        <path d="M213.5 -34 H225.5 L222.6 -29.6 H216.4 Z" />
+        <!-- Farol -->
+        <rect x="225" y="-27" width="5.4" height="5" rx=".8" />
+        <!-- Estrado, cilindro e limpa-trilhos -->
+        <rect x="172" y="-8.6" width="58" height="2.4" />
+        <rect x="219" y="-11" width="9" height="5" rx="1" />
+        <path d="M229 -8.6 L243 0 H229 Z" />
+        <!-- Rodas: traseira pequena, duas motrizes grandes e dianteira pequena -->
+        <circle cx="179" cy="-2.8" r="2.8" />
+        @for (x of drivers.x; track x) {
+          <circle [attr.cx]="x" [attr.cy]="-drivers.r" [attr.r]="drivers.r" />
+        }
+        <circle cx="225" cy="-2.8" r="2.8" />
+      </g>
+      <!-- Detalhes claros: cintas da caldeira, raios das rodas motrizes (giram) e a biela (anda em círculo) -->
+      <path class="trim" d="M199.5 -20.6 V-8.4 M215 -20.6 V-8.4" />
+      @for (x of drivers.x; track x) {
+        <g #spokes>
+          <path class="spoke" [attr.d]="'M' + (x - 3.8) + ' ' + -drivers.r + ' H' + (x + 3.8) + ' M' + x + ' ' + (-drivers.r - 3.8) + ' V' + (-drivers.r + 3.8)" />
+        </g>
+      }
+      <line #rod class="rod" [attr.x1]="drivers.x[0]" [attr.x2]="drivers.x[1]" [attr.y1]="-drivers.r" [attr.y2]="-drivers.r" />
+      <!-- Luz da cabine e lente do farol -->
+      <rect class="glow" x="177" y="-27.4" width="8" height="6" />
+      <rect class="glow" x="229" y="-26" width="1.6" height="3" />
+
+      <text #toot class="fr-toot" x="160" y="-50">PIUÍ!</text>
+    </g>
+  </g>
+</svg>

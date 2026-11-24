@@ -1,0 +1,65 @@
+/* Trilhos, fumaça e trem (app-hero-train) */
+
+.fr-rail {
+  stroke: var(--c-ink);
+  stroke-width: 1.2;
+  opacity: 0.5;
+}
+/* Dormentes: um traço tracejado logo abaixo do trilho */
+.fr-ties {
+  stroke: var(--c-ink);
+  stroke-width: 2.6;
+  stroke-dasharray: 1.2 7;
+  opacity: 0.35;
+}
+/* Baforadas: posição, tamanho e opacidade vêm de train.ts; a transição suaviza o aparecer e o sumir. */
+.fr-smoke circle {
+  fill: var(--c-paper);
+  stroke: var(--c-ink);
+  stroke-width: 0.8;
+  opacity: 0;
+  transition: opacity 1.6s;
+}
+
+.fr-train {
+  cursor: pointer;
+  pointer-events: auto;
+}
+.fr-train .body {
+  fill: var(--c-ink);
+}
+/* Janelas e a faixa clara dos vagões */
+.fr-train .win {
+  fill: var(--c-sand);
+}
+/* Guarda-corpo das plataformas */
+.fr-train .rail-line {
+  fill: none;
+  stroke: var(--c-ink);
+  stroke-width: 1;
+  stroke-linecap: round;
+}
+/* Cintas da caldeira, raios das rodas e biela: traços claros sobre o preto */
+.fr-train .trim,
+.fr-train .spoke {
+  fill: none;
+  stroke: var(--c-sand);
+  stroke-width: 0.6;
+  opacity: 0.7;
+}
+.fr-train .rod {
+  stroke: var(--c-sand);
+  stroke-width: 1.1;
+  stroke-linecap: round;
+}
+/* Luzes: cabine, farol e lanterna traseira */
+.fr-train .glow {
+  fill: var(--c-ochre);
+}
+/* "PIUÍ!": invisível até o clique; train.ts mostra e anima */
+.fr-toot {
+  font: 400 14px var(--f-display);
+  letter-spacing: 1.4px;
+  fill: var(--c-rust);
+  opacity: 0;
+}

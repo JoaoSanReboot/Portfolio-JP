@@ -1,0 +1,8 @@
+<!-- Cada bala: ponta de chumbo + cartucho de latão com o aro da base -->
+@for (k of bullets(); track k) {
+  <svg class="fr-bullet" viewBox="0 0 8 22" [style.--k]="k">
+    <path class="tip" d="M4 0 C6.6 1.6 7 4.6 7 8 H1 C1 4.6 1.4 1.6 4 0Z" />
+    <rect class="case" x="1" y="8.8" width="6" height="11.2" />
+    <rect class="case" x=".3" y="20.4" width="7.4" height="1.6" />
+  </svg>
+}

@@ -1,0 +1,4 @@
+/* Fundo da Hero (app-hero-backdrop): sol e montanhas. Regra: rust só no sol e no botão principal. */
+.fr-sun-disc {
+  fill: var(--c-rust);
+}

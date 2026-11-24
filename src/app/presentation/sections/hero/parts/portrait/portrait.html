@@ -1,0 +1,43 @@
+<!-- Definições usadas só pelo cartão -->
+<svg width="0" height="0" style="position: absolute" aria-hidden="true">
+  <defs>
+    <!-- Sépia suave da foto: tons de cinza mapeados de tinta escura → marrom → papel -->
+    <filter id="fr-duo" color-interpolation-filters="sRGB">
+      <feColorMatrix type="saturate" values="0" />
+      <feComponentTransfer>
+        <feFuncR type="table" tableValues="0.118 0.5 0.945" />
+        <feFuncG type="table" tableValues="0.086 0.38 0.906" />
+        <feFuncB type="table" tableValues="0.071 0.27 0.827" />
+      </feComponentTransfer>
+    </filter>
+    <!-- Retícula de pontos: fundo do placeholder -->
+    <pattern id="fr-half" width="7" height="7" patternUnits="userSpaceOnUse">
+      <circle cx="3.5" cy="3.5" r="1.4" fill="#1e1612" opacity=".18" />
+    </pattern>
+  </defs>
+</svg>
+
+<!-- .fr-card dá a perspectiva; .tilt inclina (portrait.ts → tilt()) -->
+<div class="fr-card a a-portrait">
+  <div #tilt class="tilt">
+    <div class="fr-portrait" [class.has-photo]="hasPhoto()">
+      <!-- Placeholder: aparece enquanto a foto não carrega, ou se ela não existir -->
+      <svg class="ph" viewBox="0 0 300 392" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+        <rect width="300" height="392" fill="url(#fr-half)" />
+        <g class="f-ground" opacity=".88">
+          <ellipse cx="150" cy="176" rx="52" ry="62" />
+          <path d="M133 228 h34 v26 h-34z" />
+          <path d="M34 392 C38 314 78 268 150 260 C222 268 262 314 266 392 Z" />
+        </g>
+      </svg>
+      <span class="fr-ph-note" aria-hidden="true">Sua foto aqui</span>
+      <!-- A foto fica num wrapper com o filtro sépia (assim a animação de "revelar" não apaga o filtro) -->
+      <span class="fr-photo">
+        @if (photoUrl(); as src) {
+          <img [src]="src" [alt]="'Retrato de ' + name()" (load)="hasPhoto.set(true)" (error)="hasPhoto.set(false)" />
+        }
+      </span>
+    </div>
+    <span class="glare" aria-hidden="true"></span>
+  </div>
+</div>

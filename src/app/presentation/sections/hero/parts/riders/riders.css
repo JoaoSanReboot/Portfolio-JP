@@ -1,0 +1,131 @@
+/*
+ * Pistoleiros (app-hero-riders).
+ * Galope em 2 quadros (.la/.lb alternando) + balanço do corpo; o clarão do disparo pisca de vez em quando.
+ * --g (do template) defasa cada cavaleiro; --gait é a duração de uma passada (mais lenta ao frear).
+ * Os estados (.is-slowing, .is-halted, .is-rearing, .is-back) são ligados por riders.ts.
+ */
+.fr-rider {
+  --gait: 0.34s;
+}
+.fr-rider .ink {
+  fill: var(--c-ink);
+}
+.fr-rider .line {
+  fill: none;
+  stroke: var(--c-ink);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.fr-rider .arm {
+  stroke-width: 1.2;
+}
+.fr-rider .bob {
+  animation: fr-bob var(--gait) ease-in-out infinite;
+  animation-delay: var(--g);
+}
+.fr-rider .la {
+  animation: fr-legs var(--gait) steps(1) infinite;
+  animation-delay: var(--g);
+}
+.fr-rider .lb {
+  animation: fr-legs var(--gait) steps(1) infinite;
+  animation-delay: calc(var(--g) - var(--gait) / 2);
+}
+.fr-rider .flash {
+  fill: var(--c-ochre);
+  opacity: 0;
+  animation: fr-flash 3.6s linear infinite;
+  animation-delay: calc(var(--g) * 2);
+}
+
+/* ---------- Desistência ---------- */
+
+/* Freando: a passada fica mais lenta */
+.fr-rider.is-slowing {
+  --gait: 0.7s;
+}
+/* Parado: pernas e corpo congelam */
+.fr-rider.is-halted .bob,
+.fr-rider.is-halted .la,
+.fr-rider.is-halted .lb {
+  animation-play-state: paused;
+}
+/* Empinando: o cavalo gira sobre as patas traseiras (x=0, y=0) e os armados atiram para o alto */
+.fr-rider .rear {
+  transform-origin: 0 0;
+}
+.fr-rider.is-rearing .rear {
+  animation: fr-rear 0.95s ease-in-out both;
+}
+.fr-rider.is-rearing .flash {
+  animation: fr-burst 0.32s steps(1) 0.2s 2;
+}
+/* Meia-volta: espelha em torno do meio do cavalo (x≈12) */
+.fr-rider .face {
+  transform-origin: 12px 0;
+  transition: scale 0.4s var(--e-out);
+}
+.fr-rider.is-back .face {
+  scale: -1 1;
+}
+
+/* ---------- Tiro perdido ---------- */
+
+/* Disparo: o clarão acende na hora, fora do ciclo normal */
+.fr-rider.is-firing .flash {
+  animation: none;
+  opacity: 1;
+}
+/* Rastro da bala (posição e visibilidade controladas por riders.ts) */
+.fr-shot {
+  stroke: var(--c-ochre);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  opacity: 0;
+}
+
+/* ---------- Keyframes ---------- */
+
+@keyframes fr-bob {
+  50% {
+    transform: translateY(-1.4px);
+  }
+}
+@keyframes fr-legs {
+  50% {
+    opacity: 0;
+  }
+}
+@keyframes fr-flash {
+  0%,
+  90%,
+  95%,
+  100% {
+    opacity: 0;
+  }
+  91.5% {
+    opacity: 1;
+  }
+}
+@keyframes fr-rear {
+  0%,
+  100% {
+    rotate: 0deg;
+  }
+  30%,
+  65% {
+    rotate: -26deg;
+  }
+  48% {
+    rotate: -20deg;
+  }
+}
+@keyframes fr-burst {
+  0% {
+    opacity: 1;
+  }
+  45% {
+    opacity: 0;
+  }
+}

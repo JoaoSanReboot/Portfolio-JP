@@ -1,0 +1,28 @@
+<!-- As camadas SVG vão de x=-1440 a 2880 para cobrir telas largas -->
+<svg class="fr-svg fr-back" role="img" aria-label="Paisagem do Velho Oeste ao entardecer">
+  <!-- Sol com as faixas recortadas embaixo. O grupo de fora muda no mobile; #sun recebe a paralaxe. -->
+  <g [attr.transform]="sunTransform()">
+    <g #sun class="a a-sun">
+      <mask id="fr-sunmask">
+        <rect x="-300" y="-300" width="600" height="600" fill="#fff" />
+        <rect x="-300" y="80" width="600" height="4" fill="#000" />
+        <rect x="-300" y="118" width="600" height="7" fill="#000" />
+        <rect x="-300" y="154" width="600" height="10" fill="#000" />
+        <rect x="-300" y="188" width="600" height="14" fill="#000" />
+      </mask>
+      <circle class="fr-sun-disc" r="236" mask="url(#fr-sunmask)" />
+    </g>
+  </g>
+
+  <!-- Montanhas ao fundo (cor de areia, com hachura nas encostas) -->
+  <g #far class="a a-far">
+    <path
+      class="f-sand"
+      d="M-1440 1500 V600 L0 600 L60 598 L92 560 L210 556 L238 590 L380 592 L418 540 L470 528 L540 531 L572 575 L700 580 L758 520 L898 515 L928 560 L1080 566 L1118 530 L1200 527 L1238 575 L1330 578 L1368 548 L1440 545 L2880 545 V1500 Z"
+    />
+    <path
+      fill="url(#fr-hatch)"
+      d="M540 531 L572 575 L572 700 L540 700Z M898 515 L928 560 L928 700 L898 700Z M1200 527 L1238 575 L1238 700 L1200 700Z M210 556 L238 590 L238 700 L210 700Z"
+    />
+  </g>
+</svg>

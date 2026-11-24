@@ -1,43 +1,16 @@
 /*
- * Hero "Fronteira"
- * ----------------
+ * Hero "Fronteira": base, palco e a coreografia da entrada.
+ * O estilo de cada peça fica no CSS dela (parts/*), e os tokens em src/styles/tokens.css.
  * Nasceu de docs/reference/hero-referencia.html; os desvios aprovados estão listados no CLAUDE.md.
- * O componente usa ViewEncapsulation.None: tudo aqui é prefixado com `fr-` e escopado por `.fr-hero`.
  *
  * Índice
- *   1. Tokens e base           6. Nome e cargo           11. Menu mobile (sheet)
- *   2. Palco                   7. Cartão da foto         12. Entrada
- *   3. Cenário                 8. Chamadas (CTAs)        13. Movimento reduzido
- *   4. Trem                    9. Navegação              14. Mobile
- *   5. Pistoleiros            10. Granulado
+ *   1. Base             3. Entrada (~2,2s)
+ *   2. Palco            4. Movimento reduzido
  */
 
-/* ========== 1. Tokens e base ========== */
+/* ========== 1. Base ========== */
 
-/* Cada --c-* aceita override global (--paper, --ink...), como na referência. */
 .fr-hero {
-  --c-paper: var(--paper, #f1e7d3);
-  --c-raised: var(--paper-raised, #f8f1e3);
-  --c-sand: var(--sand, #e3cba2);
-  --c-ink: var(--ink, #1e1612);
-  --c-muted: var(--ink-muted, #5e4c3f);
-  --c-ground: var(--ground, #1e1612);
-  --c-on-ground: var(--on-ground, #f1e7d3);
-  --c-on-ground-muted: var(--on-ground-muted, #b9a58c);
-  --c-rust: var(--rust, #a8401f);
-  --c-on-rust: var(--on-rust, #fbf4e8);
-  --c-ochre: var(--ochre, #d08a2e);
-  --c-mesa: var(--mesa, #c9733f);
-  --c-line: var(--line, #cdb896);
-  --c-focus: var(--focus, #1f6f6a);
-
-  --f-display: 'Ultra', Georgia, serif;
-  --f-sans: 'Instrument Sans', system-ui, sans-serif;
-  --f-mono: 'JetBrains Mono', ui-monospace, monospace;
-
-  --e-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --e-swing: cubic-bezier(0.34, 1.56, 0.64, 1);
-
   position: relative;
   width: 100%;
   height: 100vh;
@@ -47,27 +20,6 @@
   color: var(--c-ink);
   font-family: var(--f-sans);
   -webkit-font-smoothing: antialiased;
-}
-.fr-hero *,
-.fr-hero *::before,
-.fr-hero *::after {
-  box-sizing: border-box;
-}
-:where(.fr-hero) a {
-  color: inherit;
-  text-decoration: none;
-}
-.fr-hero button {
-  font: inherit;
-  color: inherit;
-  background: none;
-  border: 0;
-  padding: 0;
-  cursor: pointer;
-}
-.fr-hero :focus-visible {
-  outline: 2px solid var(--c-focus);
-  outline-offset: 3px;
 }
 
 /* ========== 2. Palco ========== */
@@ -82,7 +34,11 @@
   height: 900px;
   transform-origin: 0 0;
 }
-/* Camadas SVG do tamanho do palco, mas sem corte: o desenho vaza para os lados em telas largas. */
+.fr-hero[data-mode='m'] .fr-stage {
+  height: 880px;
+}
+/* Camadas SVG do tamanho do palco, mas sem corte: o desenho vaza para os lados em telas largas.
+   As de trás (fundo, trem, pistoleiros, mesa) ficam sob a foto e o nome; a da frente (chão), por cima. */
 .fr-svg {
   position: absolute;
   left: 0;
@@ -98,6 +54,7 @@
 .fr-front {
   z-index: 4;
 }
+/* Preenchimentos do cenário, usados por várias camadas */
 .f-sand {
   fill: var(--c-sand);
 }
@@ -107,616 +64,89 @@
 .f-ground {
   fill: var(--c-ground);
 }
-
-/* ========== 3. Cenário ========== */
-
-.fr-sun-disc {
-  fill: var(--c-rust);
-}
 /* Linhas da hachura (padrão #fr-hatch) nas encostas */
 .fr-hatch line {
   stroke: var(--c-ink);
   stroke-width: 1;
   opacity: 0.12;
 }
-.fr-rail {
-  stroke: var(--c-ink);
-  stroke-width: 1.2;
-  opacity: 0.5;
-}
-/* Dormentes: um traço tracejado logo abaixo do trilho */
-.fr-ties {
-  stroke: var(--c-ink);
-  stroke-width: 2.6;
-  stroke-dasharray: 1.2 7;
-  opacity: 0.35;
-}
-/* Baforadas: posição, tamanho e opacidade vêm de hero.ts; a transição suaviza o aparecer e o sumir. */
-.fr-smoke circle {
-  fill: var(--c-paper);
-  stroke: var(--c-ink);
-  stroke-width: 0.8;
-  opacity: 0;
-  transition: opacity 1.6s;
-}
 
-/* ========== 4. Trem ========== */
+/* ========== 3. Entrada (~2,2s) ========== */
 
-.fr-train {
-  cursor: pointer;
-  pointer-events: auto;
-}
-.fr-train .body {
-  fill: var(--c-ink);
-}
-.fr-train .win {
-  fill: var(--c-sand);
-}
-/* Luz da cabine da locomotiva */
-.fr-train .glow {
-  fill: var(--c-ochre);
-}
-/* "PIUÍ!": invisível até o clique; hero.ts mostra e anima */
-.fr-toot {
-  font: 400 14px var(--f-display);
-  letter-spacing: 1.4px;
-  fill: var(--c-rust);
-  opacity: 0;
-}
+/* Tudo marcado com .a começa invisível; hero.ts adiciona .is-in quando a tela de carregamento sai.
+   A coreografia fica toda aqui (e não em cada peça) para os tempos serem ajustados juntos.
 
-/* ========== 5. Pistoleiros ========== */
-
-/* Galope em 2 quadros (.la/.lb alternando) + balanço do corpo; o clarão do disparo pisca de vez em quando.
-   --g (de hero.ts) defasa cada cavaleiro para não galoparem em sincronia. */
-.fr-rider .ink {
-  fill: var(--c-ink);
+   Um movimento só para tudo: sobe 40px e aparece (fr-up), com a mesma duração (--enter) e a mesma curva.
+   A ordem é de trás para a frente, um degrau (--step) por vez:
+     0 sol · 1 montanhas · 2 trilhos e mesa · 3 chão · 4 cartão e nome (letra por letra) · 8 cargo ·
+     9 chamadas · 10 navegação
+   As letras do nome sobem de dentro do recorte da linha (fr-letter); o til e o chapéu sobem junto com a
+   letra deles, porque o deslocamento (1.6em) esconde inclusive o que passa do topo da letra. */
+.fr-hero {
+  --enter: 1.2s;
+  --step: 0.1s;
 }
-.fr-rider .line {
-  fill: none;
-  stroke: var(--c-ink);
-  stroke-width: 1.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-.fr-rider .arm {
-  stroke-width: 1.2;
-}
-.fr-rider .bob {
-  animation: fr-bob 0.34s ease-in-out infinite;
-  animation-delay: var(--g);
-}
-.fr-rider .la {
-  animation: fr-legs 0.34s steps(1) infinite;
-  animation-delay: var(--g);
-}
-.fr-rider .lb {
-  animation: fr-legs 0.34s steps(1) infinite;
-  animation-delay: calc(var(--g) - 0.17s);
-}
-.fr-rider .flash {
-  fill: var(--c-ochre);
-  opacity: 0;
-  animation: fr-flash 3.6s linear infinite;
-  animation-delay: calc(var(--g) * 2);
-}
-/* Disparo do tiro perdido: o clarão acende na hora, fora do ciclo normal */
-.fr-rider.is-firing .flash {
-  animation: none;
-  opacity: 1;
-}
-/* Rastro da bala (posição e visibilidade controladas por hero.ts) */
-.fr-shot {
-  stroke: var(--c-ochre);
-  stroke-width: 1.6;
-  stroke-linecap: round;
-  opacity: 0;
-}
-@keyframes fr-bob {
-  50% {
-    transform: translateY(-1.4px);
-  }
-}
-@keyframes fr-legs {
-  50% {
-    opacity: 0;
-  }
-}
-@keyframes fr-flash {
-  0%,
-  90%,
-  95%,
-  100% {
-    opacity: 0;
-  }
-  91.5% {
-    opacity: 1;
-  }
-}
-
-/* ========== 6. Nome e cargo ========== */
-
-/* O nome termina acima da linha do trem: o trem nunca passa por trás dele. */
-.fr-name {
-  position: absolute;
-  left: 64px;
-  top: 212px;
-  z-index: 3;
-  margin: 0;
-  font: 400 168px/0.9 var(--f-display);
-  text-transform: uppercase;
-  color: var(--c-ink);
-  white-space: nowrap;
-}
-/* Cada linha corta as letras que sobem na entrada. O padding dá espaço ao til e ao chapéu (em cima) e à cauda
-   do J (embaixo) dentro do overflow:hidden; a margem negativa compensa para não mudar o layout. */
-.fr-name .ln {
-  display: block;
-  overflow: hidden;
-  padding: 0.5em 0.4em 0.14em 8px;
-  margin: -0.5em -0.4em -0.14em -8px;
-}
-.fr-name .ch {
-  display: inline-block;
-  position: relative; /* referência do chapéu */
-}
-/* Chapéu de cowboy inclinado pousado na ponta (lado direito) do "O" de Pedro; em em, acompanha o tamanho do nome (desktop e mobile)
-   e sobe junto com a letra na entrada. */
-.fr-hat {
-  position: absolute;
-  left: 74%;
-  top: -0.22em;
-  width: 0.95em;
-  height: 0.475em;
-  translate: -50% 0;
-  rotate: 24deg;
-  fill: currentColor;
-  overflow: visible;
-}
-/* Cargo logo abaixo do nome, com um fio que completa a largura do nome */
-.fr-role {
-  position: absolute;
-  left: 68px;
-  top: 548px;
-  z-index: 3;
-  width: 710px;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 22px;
-  font: 600 26px/1 var(--f-sans);
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: var(--c-ink);
-  white-space: nowrap;
-}
-/* O "L" de FullStack. Pendurado (.is-hanging): perdeu o prego de baixo e gira em torno do topo da haste,
-   cai balançando e fica num vai e vem contínuo. Consertado (.is-fixing): volta do ângulo em que estava
-   (--from, lido em hero.ts) para o lugar, com um tranco. */
-.fr-l {
-  display: inline-block;
-  transform-origin: 0.12em 0.14em;
-}
-.fr-l.is-hanging {
-  rotate: 24deg;
-  animation:
-    fr-l-drop 1.8s ease-out both,
-    fr-l-sway 2.6s ease-in-out 1.8s infinite;
-}
-.fr-l.is-fixing {
-  animation: fr-l-fix 0.7s var(--e-out) both;
-}
-@keyframes fr-l-drop {
-  0% {
-    rotate: 0deg;
-  }
-  10% {
-    rotate: -6deg;
-  }
-  32% {
-    rotate: 62deg;
-  }
-  52% {
-    rotate: 8deg;
-  }
-  70% {
-    rotate: 38deg;
-  }
-  86% {
-    rotate: 18deg;
-  }
-  100% {
-    rotate: 24deg;
-  }
-}
-@keyframes fr-l-sway {
-  0%,
-  100% {
-    rotate: 24deg;
-  }
-  25% {
-    rotate: 31deg;
-  }
-  75% {
-    rotate: 17deg;
-  }
-}
-@keyframes fr-l-fix {
-  0% {
-    rotate: var(--from, 24deg);
-  }
-  40% {
-    rotate: -8deg;
-  }
-  70% {
-    rotate: 3deg;
-  }
-  100% {
-    rotate: 0deg;
-  }
-}
-.fr-role::after {
-  content: '';
-  flex: 1;
-  height: 3px;
-  background: currentColor;
-}
-
-/* ========== 7. Cartão da foto ========== */
-
-/* .fr-card dá a perspectiva; .tilt inclina seguindo o mouse (hero.ts) e fica parado sem ele */
-.fr-card {
-  position: absolute;
-  left: 950px;
-  top: 236px;
-  z-index: 3;
-  width: 300px;
-  height: 400px;
-  perspective: 1000px;
-}
-.fr-card .tilt {
-  position: absolute;
-  inset: 0;
-  border-radius: 26px;
-  transform-style: preserve-3d;
-  will-change: transform;
-  box-shadow:
-    0 34px 60px -28px rgba(30, 22, 18, 0.6),
-    0 12px 22px -12px rgba(30, 22, 18, 0.35);
-}
-/* Filete claro na borda */
-.fr-card .tilt::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28);
-}
-/* Brilho que acompanha a inclinação (--gx/--gy vêm do hero.ts) */
-.fr-card .glare {
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  mix-blend-mode: soft-light;
-  background: radial-gradient(
-    circle at var(--gx, 35%) var(--gy, 20%),
-    rgba(255, 255, 255, 0.55),
-    transparent 60%
-  );
-}
-.fr-portrait {
-  position: absolute;
-  inset: 0;
-  border-radius: 26px;
-  overflow: hidden;
-  background: var(--c-ground);
-}
-.fr-portrait svg.ph {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-.fr-ph-note {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 24px;
-  text-align: center;
-  font: 500 10px/14px var(--f-mono);
-  letter-spacing: 1.8px;
-  text-transform: uppercase;
-  color: var(--c-on-ground-muted);
-}
-/* O filtro sépia fica no wrapper: a animação "develop" da entrada mexe no filter da <img> */
-.fr-portrait .fr-photo {
-  position: absolute;
-  inset: 0;
-  display: none;
-  filter: url(#fr-duo);
-}
-.fr-portrait img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 22%;
-}
-/* Foto carregada: some o placeholder */
-.fr-portrait.has-photo .fr-photo {
-  display: block;
-}
-.fr-portrait.has-photo .ph,
-.fr-portrait.has-photo .fr-ph-note {
-  display: none;
-}
-
-/* ========== 8. Chamadas (CTAs) ========== */
-
-/* No chão, alinhadas ao nome. Sobre o chão, texto só em on-ground. */
-.fr-ctas {
-  position: absolute;
-  left: 72px;
-  top: 770px;
-  z-index: 5;
-  display: flex;
-  gap: 28px;
-  align-items: center;
-}
-.fr-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  height: 52px;
-  padding: 0 26px;
-  font: 500 16px/1 var(--f-sans);
-  background: var(--c-rust);
-  color: var(--c-on-rust);
-  transition:
-    background-color 0.2s,
-    gap 0.3s var(--e-out);
-}
-.fr-btn svg {
-  width: 18px;
-  height: 18px;
-}
-.fr-btn:hover {
-  gap: 18px;
-  background: var(--c-on-ground);
-  color: var(--c-ground);
-}
-/* Link com sublinhado que "recolhe" no hover */
-.fr-link {
-  padding: 8px 0;
-  font: 500 16px/1 var(--f-sans);
-  color: var(--c-on-ground);
-  background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat;
-  transition: background-size 0.35s var(--e-out);
-}
-.fr-link:hover {
-  background-size: 0 1px;
-  background-position: 100% 100%;
-}
-
-/* ========== 9. Navegação ========== */
-
-/* Fora do palco: tamanhos em px reais, não escala com a cena. */
-.fr-nav {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  z-index: 20;
-  height: 88px;
-  padding: 0 44px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end; /* sem logo: menu (e o botão mobile) à direita */
-}
-.fr-menu {
-  display: flex;
-  align-items: baseline;
-  gap: 36px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.fr-menu a {
-  position: relative;
-  display: inline-flex;
-  align-items: baseline;
-  gap: 9px;
-  padding: 8px 0;
-  font: 500 14px/1 var(--f-sans);
-  color: var(--c-ink);
-}
-/* Sublinhado: aparece no hover e fica fixo no capítulo atual */
-.fr-menu a::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 1px;
-  background: currentColor;
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.35s var(--e-out);
-}
-.fr-menu a:hover::after,
-.fr-menu a[aria-current]::after {
-  transform: scaleX(1);
-}
-/* Munição: o capítulo N mostra N balas; no hover elas pulam uma após a outra (--k = índice da bala). */
-.fr-ammo {
-  display: inline-flex;
-  align-items: flex-end;
-  gap: 2px;
-}
-.fr-bullet {
-  display: block;
-  height: 14px;
-  width: auto;
-  aspect-ratio: 8 / 22;
-  overflow: visible;
-  transition: transform 0.35s var(--e-swing);
-  transition-delay: calc(var(--k) * 40ms);
-}
-.fr-menu a:hover .fr-bullet {
-  transform: translateY(-3px);
-}
-/* Botão do menu mobile (aparece só no modo "m") */
-.fr-burger {
-  display: none;
-  width: 44px;
-  height: 44px;
-  place-items: center;
-  color: var(--c-ink);
-}
-.fr-burger svg {
-  width: 22px;
-  height: 22px;
-}
-
-/* ========== 10. Granulado ========== */
-
-.fr-grain {
-  position: absolute;
-  inset: 0;
-  z-index: 12;
-  pointer-events: none;
-  mix-blend-mode: multiply;
-  opacity: 0.12;
-}
-
-/* ========== 11. Menu mobile (sheet) ========== */
-
-.fr-sheet {
-  position: absolute;
-  inset: 0;
-  z-index: 45;
-  display: none;
-  flex-direction: column;
-  gap: 10px;
-  padding: 104px 28px 28px;
-  background: var(--c-ground);
-  color: var(--c-on-ground);
-}
-.fr-sheet.open {
-  display: flex;
-  animation: fr-fade 0.25s;
-}
-.fr-sheet a {
-  display: flex;
-  align-items: baseline;
-  gap: 14px;
-  font: 400 26px/1.35 var(--f-display);
-  text-transform: uppercase;
-}
-/* Coluna fixa para as balas, assim os nomes ficam alinhados */
-.fr-sheet .fr-ammo {
-  flex: none;
-  width: 52px;
-  gap: 3px;
-}
-.fr-sheet .fr-bullet {
-  --c-muted: var(--c-on-ground-muted);
-  height: 22px;
-}
-.fr-sheet .close {
-  position: absolute;
-  right: 16px;
-  top: 22px;
-  width: 44px;
-  height: 44px;
-  display: grid;
-  place-items: center;
-  color: var(--c-on-ground);
-}
-.fr-sheet .close svg {
-  width: 22px;
-  height: 22px;
-}
-
-/* ========== 12. Entrada (~2,5s) ========== */
-
-/* Tudo marcado com .a começa invisível; hero.ts adiciona .is-in quando as fontes chegam. */
 .fr-hero:not(.is-in) .a {
   opacity: 0;
 }
+.fr-hero.is-in .a {
+  animation: fr-up var(--enter) var(--e-out) both;
+}
 .fr-hero.is-in .a-sun {
-  animation: fr-rise 2s var(--e-out) 0.1s both;
+  animation-delay: 0s;
 }
 .fr-hero.is-in .a-far {
-  animation: fr-up 1.6s var(--e-out) 0.3s both;
+  animation-delay: calc(var(--step) * 1);
 }
-.fr-hero.is-in .a-mid {
-  animation: fr-up 1.6s var(--e-out) 0.45s both;
+.fr-hero.is-in .a-mid,
+.fr-hero.is-in .a-rail {
+  animation-delay: calc(var(--step) * 2);
 }
 .fr-hero.is-in .a-near {
-  animation: fr-up 1.6s var(--e-out) 0.6s both;
+  animation-delay: calc(var(--step) * 3);
 }
 .fr-hero.is-in .a-portrait {
-  animation: fr-card-in 1.4s var(--e-out) 0.9s both;
+  animation-delay: calc(var(--step) * 4);
 }
-/* O nome sobe letra por letra (--i = índice da letra) */
+/* O nome sobe letra por letra (--i = índice da letra), começando junto com o cartão */
 .fr-hero.is-in .fr-name .ch {
-  animation: fr-letter 1.1s var(--e-out) both;
-  animation-delay: calc(0.8s + var(--i) * 45ms);
-}
-.fr-hero.is-in .a-rail {
-  animation: fr-fade 1.2s ease 1.2s both;
+  animation: fr-letter var(--enter) var(--e-out) both;
+  animation-delay: calc(var(--step) * 4 + var(--i) * 40ms);
 }
 .fr-hero.is-in .a-role {
-  animation: fr-up20 1s var(--e-out) 1.3s both;
+  animation-delay: calc(var(--step) * 8);
 }
 .fr-hero.is-in .a-ctas {
-  animation: fr-up20 1s var(--e-out) 1.45s both;
+  animation-delay: calc(var(--step) * 9);
 }
+/* A navegação fica fora do palco, no topo: só aparece, sem subir */
 .fr-hero.is-in .a-nav {
-  animation: fr-fade 1s ease 1.5s both;
+  animation-name: fr-fade;
+  animation-delay: calc(var(--step) * 10);
 }
-/* A foto "revela" como um filme sendo revelado (o placeholder espera o cartão chegar) */
-.fr-hero.is-in .a-portrait .ph {
-  animation: fr-develop 2.2s ease-out 1.3s both;
-}
+/* A foto "revela" como um filme sendo revelado, junto com a chegada do cartão */
+.fr-hero.is-in .a-portrait .ph,
 .fr-hero.is-in .a-portrait img {
-  animation: fr-develop 2.2s ease-out both;
-}
-@keyframes fr-fade {
-  from {
-    opacity: 0;
-  }
-}
-@keyframes fr-rise {
-  from {
-    opacity: 0;
-    transform: translateY(120px);
-  }
+  animation: fr-develop 2s ease-out calc(var(--step) * 4) both;
 }
 @keyframes fr-up {
   from {
     opacity: 0;
     transform: translateY(40px);
   }
+  /* Opaco na primeira metade: nada fica translúcido por cima de outra camada por muito tempo */
+  50% {
+    opacity: 1;
+  }
 }
-@keyframes fr-up20 {
+@keyframes fr-fade {
   from {
     opacity: 0;
-    transform: translateY(16px);
   }
 }
 @keyframes fr-letter {
   from {
-    transform: translateY(105%);
-  }
-}
-@keyframes fr-card-in {
-  from {
-    opacity: 0;
-    translate: 0 60px;
+    transform: translateY(1.6em);
   }
 }
 @keyframes fr-develop {
@@ -731,7 +161,7 @@
   }
 }
 
-/* ========== 13. Movimento reduzido ========== */
+/* ========== 4. Movimento reduzido ========== */
 
 /* Com prefers-reduced-motion, hero.ts marca .is-reduced e não liga o loop (trem e pistoleiros ficam fora
    de cena). Aqui desligamos todas as animações CSS e mostramos tudo direto, já no estado final. */
@@ -742,54 +172,4 @@
 }
 .fr-hero.is-reduced .a {
   opacity: 1;
-}
-
-/* ========== 14. Mobile (< 720px) ========== */
-
-/* Janela de 400 unidades centrada em x=790 (ver hero.ts → layout()); só os ajustes de posição. */
-.fr-hero[data-mode='m'] .fr-stage {
-  height: 880px;
-}
-.fr-hero[data-mode='m'] .fr-nav {
-  height: 68px;
-  padding: 0 14px 0 20px;
-}
-.fr-hero[data-mode='m'] .fr-menu {
-  display: none;
-}
-.fr-hero[data-mode='m'] .fr-burger {
-  display: grid;
-}
-.fr-hero[data-mode='m'] .fr-card {
-  left: 834px;
-  top: 136px;
-  scale: 0.46;
-  transform-origin: 0 0;
-}
-.fr-hero[data-mode='m'] .fr-name {
-  left: 604px;
-  top: 352px;
-  font-size: 84px;
-}
-.fr-hero[data-mode='m'] .fr-role {
-  left: 606px;
-  top: 522px;
-  width: 354px;
-  gap: 12px;
-  font-size: 13px;
-}
-.fr-hero[data-mode='m'] .fr-role::after {
-  height: 2px;
-}
-.fr-hero[data-mode='m'] .fr-cactus {
-  display: none;
-}
-.fr-hero[data-mode='m'] .fr-ctas {
-  left: 606px;
-  top: 762px;
-  gap: 24px;
-}
-.fr-hero[data-mode='m'] .fr-btn {
-  height: 50px;
-  padding: 0 22px;
 }

@@ -15,7 +15,12 @@ Cada tela é limpa e homogênea, com **um foco só**. Deploy na Vercel.
      monograma JP e o mesmo chapéu na ponta do P.
   4. Menu: no lugar dos numerais romanos, **balas de revólver** (`#fr-bullet`): o capítulo N mostra N balas.
   5. Trem de **passageiros** (2 vagões com janelas e gente sentada) perseguido por **3 pistoleiros a cavalo**.
-     Com o Piuí, o trem dispara e eles ficam para trás, depois alcançam de novo.
+     Com o Piuí, o trem dispara e eles ficam para trás, depois alcançam de novo. O trem é simétrico e detalhado:
+     vagões com lanternim, faixa, plataformas e 2 truques; tênder com carvão; locomotiva com cabine atrás, domo,
+     chaminé e farol na frente, rodas motrizes com raios que giram e biela; **engates entre todos os carros**.
+     **Desistência:** se o trem abrir mais de `GIVE_UP.gap` (Piuí várias vezes), cada pistoleiro freia, empina
+     atirando para o alto, dá meia-volta e vai embora pela esquerda; espera fora da tela e volta atrás do trem
+     quando ele dá a volta. Nunca há teletransporte na tela: tudo some e reaparece fora do trecho visível.
   6. CTAs ("Ver projetos" / "Entrar em contato") à esquerda, alinhados ao nome, no chão.
   7. Foto num **cartão** moderno (`.fr-card`): cantos arredondados, sombra suave, foto em sépia suave
      (duotone ink → marrom → paper), na frente do sol. Sem flutuar: só inclina em 3D seguindo o mouse (máx. ~18°),
@@ -27,7 +32,13 @@ Cada tela é limpa e homogênea, com **um foco só**. Deploy na Vercel.
   10. **Tiro perdido** (automático, não é interação): a cada passagem do trem, quando o pistoleiro da frente chega
       perto do "L" de FullStack (`.fr-l`, o último L do cargo), um tiro escapa (clarão + rastro `.fr-shot`) e acerta
       a letra. Ela alterna entre **pendurada balançando** (`.is-hanging`) e **consertada** (`.is-fixing`), num ciclo
-      infinito. Números em `STRAY_SHOT` (`hero.scene.ts`); lógica em `moveStrayShot()` (`hero.ts`).
+      infinito. Números em `STRAY_SHOT` (`hero.scene.ts`); lógica em `moveStrayShot()` (`parts/riders/riders.ts`).
+  11. **Tela de carregamento** a cada carregamento da página: papel liso (`--c-paper`), um revólver de ação simples
+      e 6 balas em fila que sobem uma por vez e entram no tambor (que gira um clique a cada bala). Fica no mínimo
+      ~1,5s e até a Hero estar pronta (fontes); se demorar, o tambor segue girando. Na saída o cão arma e dispara
+      (clarão ocre) e a tela sobe como uma cortina, com a entrada da Hero começando junto. Movimento reduzido:
+      sem animação, só um fade rápido. Marcação em `src/index.html` (precisa aparecer antes do Angular), estilo e
+      lógica em `presentation/shared/boot-screen/`; a Hero chama `BootScreen.dismiss()` antes de `enter()`.
 - Correções de bug sobre a referência:
   1. O duotone da foto fica num wrapper (`.fr-photo`). Na referência a animação "develop" terminava em `filter:none`.
   2. Com movimento reduzido (classe `.is-reduced`), todas as animações CSS ficam desligadas e tudo aparece já no
@@ -36,7 +47,9 @@ Cada tela é limpa e homogênea, com **um foco só**. Deploy na Vercel.
 ## Princípios
 
 1. **Menos é mais.** Não adicione elementos, ícones, contadores, números ou animações que não estejam na referência.
-2. **Animação com propósito.** A entrada dura ~2,5s. No ambiente só o trem e os pistoleiros se movem (mais o "L" que o tiro
+2. **Animação com propósito.** A entrada dura ~2,2s e é **homogênea**: tudo usa o mesmo movimento (`fr-up`: sobe 40px e
+   aparece), a mesma duração (`--enter`) e um degrau fixo (`--step`) de trás para a frente; as letras do nome sobem
+   de dentro do recorte da linha, e o til e o chapéu sobem junto com a letra deles (nada aparece antes da hora). No ambiente só o trem e os pistoleiros se movem (mais o "L" que o tiro
    perdido pendura e conserta), além de uma paralaxe sutil (máx. 14px), que também inclina o cartão da foto. `prefers-reduced-motion` desliga entrada e movimento (CSS e loop JS).
 3. **Acessível.** Elementos SVG clicáveis têm `role="button"`, `tabindex` e Enter/Espaço. O foco é visível (`--c-focus`).
 
@@ -58,7 +71,8 @@ docs/photos/               Fotos originais (eucortado.png → recortada em publi
 public/                    Servido como está.
 src/
   tsconfig.json            Único tsconfig (strict). Atalhos: @domain/*, @data/*, @presentation/*.
-  styles/global.css        Fontes (Fontsource) e base global.
+  styles/global.css        Fontes (Fontsource), tokens e base global (resets, foco).
+  styles/tokens.css        Cores, fontes e easing em :root (valem para qualquer componente).
   app/
     app.ts                 Raiz: empilha as seções.
     app.config.ts          Liga os contratos às implementações.
@@ -69,8 +83,17 @@ src/
       content/             Conteúdo pessoal (portfolio.content.ts: PROFILE, CHAPTERS).
       repositories/        Implementações dos contratos (static-portfolio.repository.ts).
     presentation/
-      sections/<secao>/    Uma pasta por seção do site.
-        hero/              hero.ts (componente e loop), hero.html, hero.css, hero.scene.ts (números e elenco da cena).
+      shared/              Peças reutilizáveis em qualquer seção ou página.
+        site-nav/          Navegação (menu de capítulos + menu em tela cheia no mobile).
+        ammo/              Munição (N balas = capítulo N).
+        grain/             Granulado de papel por cima da seção.
+        boot-screen/       Tela de carregamento: boot-screen.ts (saída) e boot-screen.css (no angular.json).
+                           A marcação fica em src/index.html.
+      sections/<secao>/    Uma pasta por seção do site; a seção só monta e conduz as suas peças.
+        hero/              hero.ts (layout, entrada e o único loop rAF), hero.html, hero.css (palco e entrada),
+                           hero.scene.ts (números e elenco da cena).
+          parts/           Uma pasta por peça: backdrop (sol e montanhas), train, riders (e tiro perdido),
+                           mesa, portrait (cartão da foto), title (nome, chapéu e cargo), ground (cacto e chão), ctas.
 ```
 
 Regras:
@@ -78,6 +101,8 @@ Regras:
 - Conteúdo pessoal (nome, cargo, textos, stack, capítulos) vive em `data/content/`. Microcopy de UI pode ficar no template.
 - Imports entre camadas usam os atalhos (`@domain/...`); dentro da mesma pasta, caminho relativo.
 - Sem `.spec` (não há runner de testes), sem barrels, sem serviços que só repassam dados.
+- Uma peça = um componente. O que pode servir a outra seção vai para `presentation/shared/`. Peças animadas não
+  têm loop próprio: expõem `step()`/`parallax()`/`tilt()` e a seção chama a cada frame.
 - Componentes no padrão novo: `nome.ts`, `nome.html`, `nome.css` (+ `nome.scene.ts` se houver cena configurável). Código em inglês, interface em pt-BR.
 - CSS da Hero: global com prefixo **`fr-`** (`ViewEncapsulation.None`), escopado por `.fr-hero`. Seções novas seguem
   o mesmo prefixo.

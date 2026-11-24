@@ -1,0 +1,30 @@
+<!-- Nome letra por letra (para a entrada); a última letra leva o chapéu de cowboy inclinado -->
+<h1 class="fr-name" [attr.aria-label]="name()">
+  @for (line of nameLines(); track $index) {
+    <span class="ln">
+      @for (ch of line; track ch.i) {
+        <span class="ch" [style.--i]="ch.i" aria-hidden="true"
+          >{{ ch.c }}@if (ch.hat) {
+            <!-- Chapéu (centro da aba em 14,11): copa com a dobra no topo e fita vazada; aba com as pontas viradas -->
+            <svg class="fr-hat" viewBox="0 0 28 14"
+              ><g transform="translate(14 11)"
+                ><path
+                  fill-rule="evenodd"
+                  d="M-6.6 .6 C-7.3 -3.8 -6.6 -8.2 -3.8 -9.3 C-2.2 -9.8 -1.2 -8.3 0 -8.3 C1.2 -8.3 2.2 -9.8 3.8 -9.3 C6.6 -8.2 7.3 -3.8 6.6 .6 Z M-6.7 -1.1 H6.7 V-2.7 H-6.7 Z" /><path
+                  d="M-13 -2.6 C-12 .6 -8.5 1.9 -4.5 2 H4.5 C8.5 1.9 12 .6 13 -2.6 C10.5 -.6 8 0 5 0 H-5 C-8 0 -10.5 -.6 -13 -2.6 Z" /></g
+            ></svg>
+          }</span
+        >
+      }
+    </span>
+  }
+</h1>
+
+<!-- Cargo. O "L" de FullStack fica num span próprio: é nele que o tiro perdido acerta. -->
+<p class="fr-role a a-role">
+  <span
+    >{{ roleParts().before }}@if (roleParts().letter) {<span #roleL class="fr-l">{{ roleParts().letter }}</span>}{{
+      roleParts().after
+    }}</span
+  >
+</p>

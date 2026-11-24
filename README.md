@@ -21,7 +21,8 @@ public/                    Arquivos servidos como estão (favicon, foto.jpg)
 src/
   index.html, main.ts      Página e ponto de entrada
   tsconfig.json            TypeScript + atalhos de import (@domain, @data, @presentation)
-  styles/global.css        Fontes e base global
+  styles/global.css        Fontes, tokens e base global
+  styles/tokens.css        Cores, fontes e easing (:root)
   app/
     app.ts                 Raiz: empilha as seções
     app.config.ts          Liga os contratos do domínio às implementações
@@ -32,7 +33,10 @@ src/
       content/             Textos pessoais (nome, cargo, menu); edite aqui
       repositories/        Implementação estática do contrato
     presentation/          Interface
-      sections/hero/       Hero: componente, template, estilos e configuração da cena
+      shared/              Peças reutilizáveis: site-nav, ammo, grain, boot-screen (tela de carregamento;
+                           a marcação dela fica em src/index.html)
+      sections/hero/       Hero: monta a cena e conduz o loop (+ hero.scene.ts com os números)
+        parts/             Uma pasta por peça: backdrop, train, riders, mesa, portrait, title, ground, ctas
 ```
 
 A camada `presentation` nunca importa de `data`: ela pede o conteúdo ao domínio (`PortfolioRepository`), e o
