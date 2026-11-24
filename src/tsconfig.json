@@ -1,0 +1,33 @@
+/*
+ * Configuração do TypeScript e do compilador Angular (usada pelo angular.json e pelo editor).
+ * https://www.typescriptlang.org/tsconfig · https://angular.dev/reference/configs/angular-compiler-options
+ */
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "preserve",
+    "types": [],
+    /* Atalhos por camada da Clean Architecture (relativos a este arquivo) */
+    "paths": {
+      "@domain/*": ["./app/domain/*"],
+      "@data/*": ["./app/data/*"],
+      "@presentation/*": ["./app/presentation/*"]
+    }
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true
+  },
+  "include": ["**/*.ts"]
+}

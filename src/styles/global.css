@@ -1,0 +1,20 @@
+/*
+ * Estilos globais.
+ * Os tokens (cores, fontes, easing) e os estilos de cada seção vivem no CSS do próprio componente,
+ * com prefixo `fr-` (ex.: presentation/hero/hero.css).
+ */
+
+/* Fontes self-hosted (Fontsource): só as usadas, nos pesos usados. */
+@import '@fontsource/ultra/400'; /* display: nome, títulos */
+@import '@fontsource/instrument-sans/400'; /* texto e interface */
+@import '@fontsource/instrument-sans/500';
+@import '@fontsource/instrument-sans/600';
+@import '@fontsource/jetbrains-mono/500'; /* rótulos pequenos */
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  /* Mesma cor do chão da Hero: evita uma faixa clara se a página "esticar" no scroll do mobile. */
+  background: #1e1612;
+}
