@@ -1,0 +1,54 @@
+<!--
+  Pistoleiros a cavalo. Coordenadas de cada um: x=0 nas patas traseiras, y=0 no chão; olham para a direita.
+  Camadas (de fora para dentro), cada uma com sua animação em horse-riders.css:
+    .fr-rider (posição, horse-riders.ts) → .face (meia-volta) → .rear (empinar) → .bob (sobe e desce do galope)
+-->
+<svg class="fr-svg fr-back" aria-hidden="true">
+  <defs>
+    <!-- Contorno cor de areia: destaca os pistoleiros quando passam na frente do vagão (mesma cor) -->
+    <filter id="fr-halo" x="-20%" y="-20%" width="140%" height="140%">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="1.1" result="edge" />
+      <feFlood style="flood-color: var(--c-sand)" />
+      <feComposite in2="edge" operator="in" />
+      <feMerge><feMergeNode /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+  </defs>
+
+  <g class="a a-rail">
+    @for (rider of riders; track $index) {
+      <g #rider class="fr-rider" transform="translate(-400 646)" filter="url(#fr-halo)" [style.--g]="rider.delay">
+        <g class="face">
+          <g class="rear">
+            <g class="bob">
+              <!-- Cavalo; .la/.lb são os dois quadros das pernas no galope -->
+              <path
+                class="ink"
+                d="M2 -12 C2 -15 5 -16.2 9 -16.2 L15.5 -16.2 C18 -16.2 19.4 -15.2 20.2 -13.8 L20.2 -10.6 C17 -8.4 6 -8.4 3.2 -9.2 C2.3 -10 2 -11 2 -12Z M17 -15.4 L21.6 -21.4 C22.8 -22.8 24.8 -22.8 25.8 -21.4 L28.6 -17.6 C29.2 -16.6 28.2 -15.6 27.1 -16.2 L24.2 -18 L21.4 -12 Z M22.6 -22 l.5 -2.1 l1 1.7z M2.6 -13.4 C-.8 -13.4 -2.8 -11.4 -4 -8.2 C-2 -9.8 0 -10.6 2.8 -10.8Z"
+              />
+              <path class="line la" d="M18 -10.4 L22.6 -4.6 L25.2 -1.6 M16.6 -10.2 L20.4 -3.6 L21.8 -.8 M5 -10 L.6 -4.6 L-2.2 -2 M6.4 -9.6 L2.8 -3.4 L1.8 -.8" />
+              <path class="line lb" d="M18 -10.4 L16.4 -4.6 L18.2 -1.6 M16.6 -10.2 L14 -4.4 L15.2 -1.2 M5 -10 L8.2 -4.6 L7 -1.2 M6.4 -9.6 L10.4 -5.4 L9.6 -1.6" />
+              <!-- Cavaleiro: tronco, cabeça, chapéu e perna -->
+              <path class="ink" d="M9.2 -16 L11.6 -23.2 L14.2 -22.6 L13.2 -16Z" />
+              <circle class="ink" cx="13.2" cy="-25.2" r="1.9" />
+              <rect class="ink" x="9.4" y="-27.3" width="7.6" height="1.1" rx=".55" />
+              <rect class="ink" x="11.1" y="-29.9" width="4.2" height="3" rx=".9" />
+              <path class="line" d="M11.6 -16 L13 -12.4 L11.6 -10.6" />
+              @if (rider.gun) {
+                <!-- Braço erguido com o revólver e o clarão do disparo -->
+                <path class="line arm" d="M13.2 -21.6 L17.4 -23.6 L19.4 -26.8" />
+                <path class="ink" d="M18.6 -27.6 h3.8 v1.3 h-2.5 l-.7 1.5 h-.9z" />
+                <path class="flash" d="M23 -27 l1.7 -1.3 l.2 -1.7 l.9 1.5 l1.9 -.2 l-1.3 1.3 l1.1 1.4 l-1.8 -.3 l-1 1.5 l-.3 -1.7z" />
+              } @else {
+                <!-- Braço nas rédeas -->
+                <path class="line arm" d="M13.2 -21.6 L17.6 -19.4 L20.6 -18.4" />
+              }
+            </g>
+          </g>
+        </g>
+      </g>
+    }
+
+    <!-- Tiro perdido: o rastro da bala que vai do revólver até o "L" de FullStack (horse-riders.ts) -->
+    <line #shot class="fr-shot" x1="0" y1="0" x2="0" y2="0" />
+  </g>
+</svg>

@@ -1,4 +1,0 @@
-/* Primeiro plano (app-hero-ground). No mobile o cacto fica fora da janela visível. */
-.fr-hero[data-mode='m'] .fr-cactus {
-  display: none;
-}

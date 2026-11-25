@@ -1,0 +1,75 @@
+/*
+ * Base dos capítulos: as seções abaixo da página principal (Sobre mim, Ferramentas...).
+ * Uso: <section class="fr-chapter fr-<secao>">, com <app-paper-texture /> como primeiro filho.
+ */
+.fr-chapter {
+  --pad: 72px; /* margem lateral */
+  --pad-end: 120px; /* respiro no fim; o fechamento (app-campfire-closing) o cobre */
+
+  position: relative;
+  overflow: hidden;
+  padding: 0 var(--pad) var(--pad-end);
+  background: var(--c-paper);
+  color: var(--c-ink);
+  font-family: var(--f-sans);
+  -webkit-font-smoothing: antialiased;
+}
+/* O granulado fica sobre o papel e por baixo do conteúdo */
+.fr-chapter > :not(app-paper-texture) {
+  position: relative;
+  z-index: 1;
+}
+.fr-chapter .fr-paper-texture {
+  z-index: 0;
+}
+:root[data-theme='lua'] .fr-chapter .fr-paper-texture {
+  mix-blend-mode: screen;
+  opacity: 0.05;
+}
+
+/* Rótulo pequeno em mono */
+.fr-k {
+  font: 500 11px/14px var(--f-mono);
+  letter-spacing: 2.2px;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+
+/* Aparece ao entrar na tela: class="fr-reveal" + a diretiva appRevealOnScroll, que liga .is-seen.
+   Usa `translate` (e não `transform`) para não brigar com a rotação e o hover das peças. */
+.fr-reveal {
+  opacity: 0;
+  translate: 0 14px;
+  transition:
+    opacity 0.9s var(--e-out),
+    translate 0.9s var(--e-out);
+}
+.fr-reveal.is-seen {
+  opacity: 1;
+  translate: none;
+}
+
+@media (max-width: 760px) {
+  .fr-chapter {
+    --pad: 24px;
+    --pad-end: 80px;
+  }
+  .fr-k {
+    font-size: 10px;
+    letter-spacing: 1.6px;
+  }
+}
+
+/* Movimento reduzido: sem entrada, sem transições e sem animações em laço */
+@media (prefers-reduced-motion: reduce) {
+  .fr-chapter *,
+  .fr-chapter *::before,
+  .fr-chapter *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .fr-reveal {
+    opacity: 1;
+    translate: none;
+  }
+}

@@ -1,0 +1,41 @@
+<!-- Cordilheira de mesas na borda de cima -->
+<svg class="ridge" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+  <path class="r1" d="M0 90 V40 L80 38 L110 10 L260 6 L290 36 L520 40 L560 14 L700 10 L730 42 L980 46 L1010 20 L1160 16 L1190 44 L1440 46 V90Z" />
+  <path class="r2" d="M0 90 V64 L200 62 L230 44 L380 42 L410 64 L860 66 L890 48 L1060 46 L1090 66 L1440 68 V90Z" />
+  <path class="r3" d="M0 90 V80 C240 74 480 86 720 82 C960 78 1200 86 1440 80 V90Z" />
+</svg>
+
+<div class="in fr-reveal" appRevealOnScroll>
+  <p>{{ phrase().before }}@if (phrase().highlight) {<em>{{ phrase().highlight }}</em>}{{ phrase().after }}</p>
+  <div class="side">
+    <!-- Fogueira: vapor do bule, duas chamas, faíscas, lenha, pedras e o bule -->
+    <svg class="fire" viewBox="0 0 180 150" aria-hidden="true">
+      <path class="steam" d="M134 62 q-6 -8 0 -16 q6 -8 0 -16" />
+      <path class="steam" d="M142 64 q-6 -8 0 -16 q6 -8 0 -16" />
+      <path class="f1" d="M90 118 C64 112 60 88 74 70 C76 84 84 86 86 80 C82 62 92 46 104 36 C100 54 116 62 116 84 C116 104 106 116 90 118Z" />
+      <path class="f2" d="M90 118 C76 114 74 98 82 88 C84 96 90 98 92 92 C90 82 96 74 102 70 C100 82 108 88 106 100 C104 112 98 117 90 118Z" />
+      <circle class="spark" cx="96" cy="60" r="1.8" />
+      <circle class="spark" cx="84" cy="70" r="1.4" />
+      <circle class="spark" cx="104" cy="66" r="1.5" />
+      <rect class="log" x="50" y="114" width="84" height="10" rx="5" transform="rotate(-8 92 119)" />
+      <rect class="log" x="48" y="114" width="84" height="10" rx="5" transform="rotate(10 90 119)" />
+      <ellipse class="stone" cx="44" cy="128" rx="12" ry="7" />
+      <ellipse class="stone" cx="138" cy="128" rx="12" ry="7" />
+      <ellipse class="stone" cx="66" cy="132" rx="10" ry="6" />
+      <ellipse class="stone" cx="116" cy="132" rx="10" ry="6" />
+      <path class="pot" d="M124 104 h30 l-3 -26 h-24z" />
+      <path class="pot" d="M128 78 l3 -8 h16 l3 8z" />
+      <path class="pot-line" d="M154 84 q12 4 4 16" />
+      <path class="pot-line" d="M127 80 l-10 -6" stroke-linecap="round" />
+    </svg>
+    <a class="btn" [href]="closing().botao.link"
+      >{{ closing().botao.texto }}
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6" /></svg
+    ></a>
+  </div>
+</div>
+
+<div class="foot">
+  <span>{{ closing().rodape.fim }}</span>
+  <span>{{ closing().rodape.proximo }}</span>
+</div>

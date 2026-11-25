@@ -1,0 +1,267 @@
+/*
+ * Noite de fogueira (app-campfire-scene). As animações do fogo (chama, faísca e vapor) são compartilhadas:
+ * ficam em src/styles/campfire-animations.css.
+ */
+.fr-about-campfire {
+  /* Tons da noite, misturados a partir da paleta */
+  --night: color-mix(in srgb, var(--c-ground) 86%, var(--c-mesa));
+  --night-mesa: color-mix(in srgb, var(--c-ground) 66%, var(--c-mesa));
+  --wood: color-mix(in srgb, var(--c-ground) 56%, var(--c-mesa));
+  --coffee: color-mix(in srgb, var(--c-ground) 34%, var(--c-mesa));
+  --stone: color-mix(in srgb, var(--c-ground) 68%, var(--c-on-ground-muted));
+
+  display: block;
+  justify-self: end;
+  width: 100%;
+  max-width: 540px;
+}
+.fr-about-campfire figure {
+  margin: 0;
+}
+.fr-about-campfire svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* ---------- Céu, mesas e chão ---------- */
+
+/* Moldura dupla: papel elevado com um filete de tinta por fora */
+.fr-about-campfire .frame {
+  fill: var(--c-raised);
+}
+.fr-about-campfire .frame-line {
+  fill: var(--c-ink);
+}
+.fr-about-campfire .sky {
+  fill: var(--night);
+}
+.fr-about-campfire .stars {
+  fill: var(--c-on-ground);
+  opacity: 0.75;
+}
+.fr-about-campfire .mesa {
+  fill: var(--night-mesa);
+}
+.fr-about-campfire .hatch line {
+  stroke: var(--c-ground);
+  stroke-width: 1.4;
+  opacity: 0.5;
+}
+.fr-about-campfire .ground {
+  fill: var(--c-ground);
+}
+/* Clarão do fogo: respira junto com as chamas */
+.fr-about-campfire .glow {
+  animation: fr-about-glow 2.4s ease-in-out infinite alternate;
+}
+.fr-about-campfire .glow-in {
+  stop-color: var(--c-ochre);
+  stop-opacity: 0.6;
+}
+.fr-about-campfire .glow-mid {
+  stop-color: var(--c-rust);
+  stop-opacity: 0.28;
+}
+.fr-about-campfire .glow-out {
+  stop-color: var(--c-rust);
+  stop-opacity: 0;
+}
+@keyframes fr-about-glow {
+  0% {
+    opacity: 0.7;
+  }
+  40% {
+    opacity: 1;
+  }
+  65% {
+    opacity: 0.82;
+  }
+  100% {
+    opacity: 0.95;
+  }
+}
+
+/* ---------- Madeira e pedras ---------- */
+
+.fr-about-campfire .bark {
+  fill: var(--wood);
+}
+.fr-about-campfire .cut {
+  fill: var(--c-mesa);
+}
+.fr-about-campfire .ring {
+  fill: none;
+  stroke: var(--wood);
+  stroke-width: 1.5;
+}
+.fr-about-campfire .stones {
+  fill: var(--stone);
+  stroke: var(--c-ground);
+  stroke-width: 2;
+}
+
+/* ---------- Tripé e chaleira ---------- */
+
+.fr-about-campfire .pole {
+  fill: none;
+  stroke: var(--wood);
+  stroke-width: 6;
+  stroke-linecap: round;
+}
+.fr-about-campfire .chain {
+  fill: none;
+  stroke: var(--c-on-ground-muted);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 3 5;
+}
+.fr-about-campfire .hook {
+  fill: none;
+  stroke: var(--c-on-ground-muted);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+/* Chaleira: dá para pegar */
+.fr-about-campfire .kettle {
+  cursor: grab;
+}
+.fr-about-campfire .kettle:active {
+  cursor: grabbing;
+}
+.fr-about-campfire .kettle-hit {
+  fill: transparent;
+}
+.fr-about-campfire .pot {
+  fill: var(--c-on-ground-muted);
+}
+.fr-about-campfire .pot-line {
+  fill: none;
+  stroke: var(--c-on-ground-muted);
+  stroke-width: 4.5;
+  stroke-linecap: round;
+}
+.fr-about-campfire .pot-shade {
+  stroke: var(--c-ground);
+  stroke-width: 2;
+  opacity: 0.45;
+}
+.fr-about-campfire .pot-shine {
+  fill: none;
+  stroke: var(--c-on-ground);
+  stroke-width: 3;
+  stroke-linecap: round;
+  opacity: 0.6;
+}
+.fr-about-campfire .steam {
+  --steam-y: -34px;
+
+  fill: none;
+  stroke: var(--c-on-ground);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  opacity: 0;
+  animation: fr-campfire-steam 3s ease-out infinite;
+}
+.fr-about-campfire .steam + .steam {
+  animation-delay: 1.5s;
+}
+
+/* ---------- Copos e café ---------- */
+
+.fr-about-campfire .glass-body {
+  fill: color-mix(in srgb, var(--c-on-ground) 16%, transparent);
+  stroke: var(--c-on-ground);
+  stroke-width: 1.8;
+  stroke-linejoin: round;
+}
+.fr-about-campfire .glass-lines {
+  stroke: var(--c-on-ground);
+  stroke-width: 1;
+  stroke-linecap: round;
+  opacity: 0.5;
+}
+.fr-about-campfire .coffee {
+  fill: var(--coffee);
+}
+.fr-about-campfire .coffee-stream {
+  fill: none;
+  stroke: var(--coffee);
+  stroke-width: 3.4;
+  stroke-linecap: round;
+  opacity: 0;
+}
+/* O vapor do copo só aparece com ele cheio */
+.fr-about-campfire .glass .steam {
+  --steam-y: -16px;
+
+  stroke-width: 1.6;
+  animation: none;
+}
+.fr-about-campfire .glass.is-full .steam {
+  animation: fr-campfire-steam 3s ease-out infinite;
+}
+.fr-about-campfire .glass.is-full .steam + .steam {
+  animation-delay: 1.5s;
+}
+
+/* ---------- Fogo ---------- */
+
+/* O fogo fica na frente da chaleira, mas não atrapalha pegá-la */
+.fr-about-campfire .fire,
+.fr-about-campfire .sparks {
+  pointer-events: none;
+}
+/* Cada chama no seu ritmo, sempre presa à lenha (a origem é a base do fogo) */
+.fr-about-campfire .fire path {
+  transform-origin: 280px 452px;
+  animation: fr-campfire-flick 1.3s ease-in-out infinite alternate;
+}
+.fr-about-campfire .fire .flame-out {
+  fill: var(--c-rust);
+}
+.fr-about-campfire .fire .flame-mid {
+  fill: var(--c-ochre);
+  animation-duration: 0.95s;
+  animation-direction: alternate-reverse;
+}
+.fr-about-campfire .fire .flame-in {
+  fill: var(--c-on-ground);
+  animation-duration: 0.75s;
+}
+/* Faíscas: cada uma sai num momento e para um lado */
+.fr-about-campfire .sparks circle {
+  --spark-x: 14px;
+  --spark-y: -130px;
+
+  fill: var(--c-ochre);
+  opacity: 0;
+  animation: fr-campfire-spark 2.8s ease-out infinite;
+}
+.fr-about-campfire .sparks circle:nth-child(2) {
+  animation-delay: 0.7s;
+}
+.fr-about-campfire .sparks circle:nth-child(3) {
+  --spark-x: -12px;
+  animation-delay: 1.4s;
+}
+.fr-about-campfire .sparks circle:nth-child(4) {
+  --spark-x: 24px;
+  animation-delay: 2.1s;
+}
+
+/* ---------- Legenda ---------- */
+
+.fr-about-campfire figcaption {
+  margin-top: 22px;
+  text-align: center;
+  font: italic 400 26px/1.2 var(--f-serif);
+  color: var(--c-ink);
+}
+
+@media (max-width: 760px) {
+  .fr-about-campfire {
+    justify-self: center;
+  }
+}

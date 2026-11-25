@@ -1,0 +1,34 @@
+<!--
+  Página principal "Fronteira". Cada peça é um componente em parts/ (navegação e granulado em presentation/shared/).
+  Ordem de empilhamento, de trás para a frente:
+    navegação (fora do palco, em px reais) ·
+    palco escalado (main-page.ts → layout()): fundo → trem → pistoleiros → planalto → foto e título → chão → chamadas ·
+    granulado por cima de tudo
+-->
+<div #page class="fr-main-page" id="inicio" data-mode="d" [class.is-reduced]="reducedMotion" (pointermove)="onPointerMove($event)">
+  <!-- Definições SVG usadas por mais de uma peça -->
+  <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+    <defs>
+      <!-- Hachura de gravura: sombras nas encostas (fundo e planalto) -->
+      <pattern id="fr-hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)" class="fr-hatch">
+        <line x1="0" y1="0" x2="0" y2="7" />
+      </pattern>
+    </defs>
+  </svg>
+
+  <app-navigation-menu [chapters]="chapters" [current]="chapters[0]?.anchor ?? null" />
+
+  <!-- Palco: 1440×900 no desktop, 880 de altura no mobile -->
+  <div #stage class="fr-stage">
+    <app-sun-and-mountains [mobile]="mobile()" />
+    <app-train />
+    <app-horse-riders />
+    <app-plateau />
+    <app-photo-card [name]="profile.name" [photoUrl]="profile.photoUrl" />
+    <app-name-and-role [name]="profile.name" [role]="profile.role" />
+    <app-ground-and-cactus />
+    <app-action-buttons />
+  </div>
+
+  <app-paper-texture />
+</div>

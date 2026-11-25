@@ -1,0 +1,180 @@
+/* Fechamento de capítulo (app-campfire-closing). O host já é o contêiner; sangra até as bordas do .fr-chapter. */
+.fr-campfire {
+  display: block;
+  margin: 140px calc(-1 * var(--pad)) calc(-1 * var(--pad-end));
+  padding: 40px var(--pad) 56px;
+  background: var(--c-ground);
+  color: var(--c-on-ground);
+}
+.fr-campfire .ridge {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  display: block;
+  width: 100%;
+  height: 90px;
+}
+.fr-campfire .ridge .r1 {
+  fill: var(--c-sand);
+}
+.fr-campfire .ridge .r2 {
+  fill: var(--c-mesa);
+}
+.fr-campfire .ridge .r3 {
+  fill: var(--c-ground);
+}
+.fr-campfire .in {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 56px;
+  align-items: end;
+}
+.fr-campfire p {
+  margin: 0;
+  max-width: 760px;
+  font: italic 400 52px/1.04 var(--f-serif);
+}
+.fr-campfire p em {
+  color: var(--c-ochre);
+}
+.fr-campfire .side {
+  display: flex;
+  align-items: flex-end;
+  gap: 40px;
+}
+
+/* ---------- Fogueira (animações em src/styles/campfire-animations.css) ---------- */
+
+.fr-campfire .fire {
+  width: 230px;
+  height: 190px;
+  overflow: visible;
+}
+.fr-campfire .log {
+  fill: #3a2a20;
+}
+.fr-campfire .stone {
+  fill: #4a3a30;
+}
+.fr-campfire .f1 {
+  fill: var(--c-rust);
+  transform-origin: 90px 118px;
+  animation: fr-campfire-flick 1.1s ease-in-out infinite alternate;
+}
+.fr-campfire .f2 {
+  fill: var(--c-ochre);
+  transform-origin: 90px 118px;
+  animation: fr-campfire-flick 0.8s ease-in-out infinite alternate-reverse;
+}
+.fr-campfire .pot {
+  fill: var(--c-on-ground-muted);
+}
+.fr-campfire .pot-line {
+  fill: none;
+  stroke: var(--c-on-ground-muted);
+  stroke-width: 3;
+}
+.fr-campfire .steam {
+  fill: none;
+  stroke: var(--c-on-ground-muted);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  opacity: 0;
+  animation: fr-campfire-steam 2.6s ease-out infinite;
+}
+.fr-campfire .steam + .steam {
+  animation-delay: 1.3s;
+}
+.fr-campfire .spark {
+  fill: var(--c-ochre);
+  animation: fr-campfire-spark 2.2s ease-out infinite;
+}
+.fr-campfire .spark:nth-of-type(2) {
+  animation-delay: 0.8s;
+}
+.fr-campfire .spark:nth-of-type(3) {
+  animation-delay: 1.5s;
+}
+/* ---------- Botão e rodapé ---------- */
+
+.fr-campfire .btn {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  height: 52px;
+  padding: 0 26px;
+  font: 500 16px/1 var(--f-sans);
+  background: var(--c-rust);
+  color: var(--c-on-rust);
+  transition:
+    gap 0.3s var(--e-out),
+    background-color 0.2s,
+    color 0.2s;
+}
+.fr-campfire .btn svg {
+  width: 18px;
+  height: 18px;
+}
+.fr-campfire .btn:hover {
+  gap: 18px;
+  background: var(--c-on-ground);
+  color: var(--c-ground);
+}
+.fr-campfire .foot {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(185, 165, 140, 0.22);
+  font: 500 10px/14px var(--f-mono);
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: var(--c-on-ground-muted);
+}
+
+/* Telas médias: a frase fica em cima, para não espremer */
+@media (max-width: 1100px) {
+  .fr-campfire .in {
+    grid-template-columns: 1fr;
+  }
+  .fr-campfire .side {
+    justify-content: space-between;
+  }
+}
+@media (max-width: 760px) {
+  .fr-campfire {
+    margin-top: 110px;
+    padding-bottom: 40px;
+  }
+  .fr-campfire .in {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .fr-campfire p {
+    font-size: 34px;
+  }
+  /* Fogueira ao lado do botão */
+  .fr-campfire .side {
+    justify-content: space-between;
+    width: 100%;
+  }
+  .fr-campfire .fire {
+    width: 120px;
+    height: 100px;
+  }
+  .fr-campfire .foot {
+    flex-direction: column;
+    gap: 6px;
+  }
+}
+/* Celulares estreitos: a fogueira e o botão cabem lado a lado */
+@media (max-width: 380px) {
+  .fr-campfire .side {
+    gap: 10px;
+  }
+  .fr-campfire .btn {
+    padding: 0 18px;
+  }
+}

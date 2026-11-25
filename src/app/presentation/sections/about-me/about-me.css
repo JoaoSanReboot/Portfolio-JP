@@ -1,0 +1,99 @@
+/*
+ * Capítulo "Sobre mim": título e texto ao lado da fogueira. Cada peça tem o seu CSS em parts/*; a base dos
+ * capítulos (margens, rótulo, aparição no scroll) está em src/styles/chapter-base.css.
+ */
+
+/* ---------- Abertura: o texto ocupa o que sobra da fogueira ---------- */
+
+.fr-about-opening {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(440px, 29vw, 540px);
+  gap: 72px;
+  align-items: center;
+  margin-top: 72px;
+}
+.fr-about-opening .title {
+  margin: 0;
+  font: 900 120px/0.84 var(--f-poster);
+  text-transform: uppercase;
+  letter-spacing: -1px;
+}
+/* Cada linha corta as letras que sobem do chão na entrada */
+.fr-about-opening .ln {
+  display: block;
+  overflow: hidden;
+  padding-top: 10px;
+  margin-top: -10px;
+}
+.fr-about-opening .ln span {
+  display: inline-block;
+}
+.fr-about-opening .body {
+  display: grid;
+  gap: 16px;
+  max-width: 1040px;
+  margin-top: 40px;
+}
+.fr-about-opening .body p {
+  margin: 0;
+  font: 500 18px/29px var(--f-sans);
+  color: var(--c-muted);
+}
+
+/* Entrada: o título sobe do chão e o resto (.r) aparece em fade escalonado (--d). O trilho se desenha sozinho. */
+.fr-about-opening:not(.is-seen) .r {
+  opacity: 0;
+}
+.fr-about-opening:not(.is-seen) .ln span {
+  transform: translateY(105%);
+}
+.fr-about-opening.is-seen .ln span {
+  animation: fr-about-up 1s var(--e-out) both;
+}
+.fr-about-opening.is-seen .ln:nth-child(2) span {
+  animation-delay: 0.08s;
+}
+.fr-about-opening.is-seen .r {
+  animation: fr-about-fade 1s var(--e-out) both;
+  animation-delay: calc(0.2s + var(--d, 0) * 100ms);
+}
+@keyframes fr-about-up {
+  from {
+    transform: translateY(105%);
+  }
+}
+@keyframes fr-about-fade {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+/* ---------- Telas médias ---------- */
+
+@media (max-width: 1100px) {
+  .fr-about-opening {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 48px;
+  }
+}
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 760px) {
+  .fr-about-opening {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 44px;
+    margin-top: 56px;
+  }
+  .fr-about-opening .title {
+    font-size: 88px;
+  }
+  .fr-about-opening .body {
+    margin-top: 28px;
+  }
+  .fr-about-opening .body p {
+    font-size: 16px;
+    line-height: 26px;
+  }
+}

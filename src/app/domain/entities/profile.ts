@@ -1,7 +1,7 @@
 /** O dono do portfólio. */
 export interface Profile {
   readonly name: string;
-  /** Cargo, exibido abaixo do nome na Hero. */
+  /** Cargo, exibido abaixo do nome na página principal. */
   readonly role: string;
   /** Tecnologias principais (para a seção Ferramentas). */
   readonly stack: readonly string[];

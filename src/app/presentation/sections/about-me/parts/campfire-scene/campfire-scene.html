@@ -1,0 +1,122 @@
+<figure>
+  <!-- De trás para a frente: céu · mesas · chão · toco e tronco · tripé · copos · chaleira · fogo · pedras -->
+  <svg #svg viewBox="0 16 560 506" role="group" [attr.aria-label]="content().descricao">
+    <defs>
+      <clipPath id="fr-about-night"><circle cx="280" cy="250" r="222" /></clipPath>
+      <!-- Parte de dentro do copo (a base fica em 0, 0): o café não passa do vidro -->
+      <clipPath id="fr-about-glass"><path d="M-11 -32 L-8.4 -2 H8.4 L11 -32Z" /></clipPath>
+      <!-- Clarão do fogo no céu -->
+      <radialGradient id="fr-about-glow">
+        <stop class="glow-in" offset="0" />
+        <stop class="glow-mid" offset=".45" />
+        <stop class="glow-out" offset="1" />
+      </radialGradient>
+      <!-- Hachura de gravura: sombras nas encostas -->
+      <pattern id="fr-about-hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)" class="hatch"><line x1="0" y1="0" x2="0" y2="7" /></pattern>
+    </defs>
+
+    <!-- Céu: círculo com a moldura dupla -->
+    <circle class="frame-line" cx="280" cy="250" r="231" />
+    <circle class="frame" cx="280" cy="250" r="230" />
+    <g clip-path="url(#fr-about-night)">
+      <circle class="sky" cx="280" cy="250" r="222" />
+      <g class="stars">
+        <circle cx="132" cy="164" r="1.8" /><circle cx="186" cy="96" r="1.4" /><circle cx="244" cy="146" r="1.2" />
+        <circle cx="300" cy="62" r="1.8" /><circle cx="356" cy="122" r="1.4" /><circle cx="420" cy="158" r="1.8" />
+        <circle cx="94" cy="246" r="1.3" /><circle cx="168" cy="226" r="1.2" /><circle cx="392" cy="228" r="1.2" />
+        <circle cx="470" cy="236" r="1.4" /><circle cx="232" cy="52" r="1.2" /><circle cx="404" cy="88" r="1.2" />
+      </g>
+      <circle class="glow" cx="280" cy="392" r="250" fill="url(#fr-about-glow)" />
+      <path class="mesa" d="M40 540 V384 L74 380 L96 336 L168 332 L190 378 L372 384 L394 350 L466 346 L488 388 L540 390 V540Z" />
+      <path fill="url(#fr-about-hatch)" d="M168 332 L190 378 V440 H168Z M466 346 L488 388 V440 H466Z" />
+    </g>
+
+    <!-- Chão -->
+    <path class="ground" d="M0 520 C18 456 120 432 280 430 C440 432 542 456 560 520Z" />
+
+    <!-- Toco com os copos, à esquerda -->
+    <path class="bark" d="M110 408 V456 Q150 470 190 456 V408Z" />
+    <ellipse class="cut" cx="150" cy="408" rx="40" ry="10" />
+    <ellipse class="ring" cx="150" cy="408" rx="24" ry="5.5" />
+    <!-- Tronco para sentar, à direita -->
+    <rect class="bark" x="390" y="424" width="116" height="34" rx="17" />
+    <ellipse class="cut" cx="403" cy="441" rx="12" ry="16" />
+    <ellipse class="ring" cx="403" cy="441" rx="6" ry="8.5" />
+
+    <!-- Tripé, corrente e gancho -->
+    <g class="pole">
+      <path d="M290 186 L206 446" />
+      <path d="M270 186 L354 446" />
+      <path d="M280 182 L286 428" />
+    </g>
+    <path class="chain" d="M280 196 V238" />
+    <path class="hook" d="M280 240 v6 a5 5 0 1 1 -5 5" />
+
+    <!-- Copos: o fio e o nível do café são desenhados por campfire-scene.ts -->
+    <path #stream class="coffee-stream" />
+    @for (x of glasses; track x) {
+      <g #glass class="glass" [attr.transform]="'translate(' + x + ' ' + glassBaseY + ')'">
+        <rect #coffee class="coffee" clip-path="url(#fr-about-glass)" x="-14" y="0" width="28" height="0" />
+        <path class="glass-body" d="M-12 -32 L-9 0 H9 L12 -32Z" />
+        <path class="glass-lines" d="M-4.6 -4 L-5.8 -19 M0 -4 V-19 M4.6 -4 L5.8 -19" />
+        <path class="steam" d="M-4 -36 q-6 -7 0 -14 q6 -7 0 -14" />
+        <path class="steam" d="M5 -36 q-6 -7 0 -14 q6 -7 0 -14" />
+      </g>
+    }
+
+    <!-- Chaleira: dá para arrastar até os copos. O mousedown não foca
+         (o clique não deixa contorno) e o touchstart não rola a página. -->
+    <g
+      #kettle
+      class="kettle"
+      role="button"
+      tabindex="0"
+      aria-label="Chaleira: servir café"
+      (mousedown)="$event.preventDefault()"
+      (touchstart)="$event.preventDefault()"
+      (pointerdown)="onPointerDown($event)"
+      (pointermove)="onPointerMove($event)"
+      (pointerup)="onPointerUp()"
+      (pointercancel)="onPointerCancel()"
+      (click)="onActivate($event)"
+      (keydown.enter)="onActivate($event)"
+      (keydown.space)="onActivate($event)"
+    >
+      <rect class="kettle-hit" x="212" y="240" width="130" height="112" />
+      <path class="pot-line" d="M251 290 C252 232 308 232 309 290" />
+      <path class="pot-line" d="M315 300 q24 -2 18 22 q-3 12 -17 12" />
+      <path class="pot" d="M248 320 L220 292 L227 285 L252 300Z" />
+      <path class="pot" d="M250 286 H310 Q321 306 317 338 Q316 344 308 344 H252 Q244 344 243 338 Q239 306 250 286Z" />
+      <path class="pot" d="M253 284 Q280 262 307 284Z" />
+      <circle class="pot" cx="280" cy="268" r="4.5" />
+      <path class="pot-shade" d="M250 286 H310" />
+      <path class="pot-shine" d="M254 300 Q250 316 253 332" />
+      <path class="steam" d="M222 280 q-9 -11 0 -22 q9 -11 0 -22" />
+      <path class="steam" d="M232 276 q-9 -11 0 -22 q9 -11 0 -22" />
+    </g>
+
+    <!-- Fogo: três chamas, faíscas e a lenha cruzada -->
+    <g class="fire">
+      <path class="flame-out" d="M280 452 C232 450 212 418 222 384 C228 396 236 400 240 394 C236 372 246 354 258 344 C258 360 268 366 274 356 C276 350 278 346 282 340 C286 352 292 362 300 358 C304 354 304 348 302 342 C318 354 326 374 322 394 C328 398 334 392 338 382 C350 416 330 450 280 452Z" />
+      <path class="flame-mid" d="M280 452 C246 450 234 426 242 402 C247 410 253 411 256 405 C254 390 262 376 272 366 C273 379 281 383 285 374 C298 382 306 396 303 408 C308 411 313 408 316 402 C324 428 312 450 280 452Z" />
+      <path class="flame-in" d="M280 452 C260 450 254 434 260 418 C264 423 268 423 270 418 C270 408 275 400 281 394 C284 404 292 410 293 420 C296 422 299 420 301 416 C306 434 298 450 280 452Z" />
+    </g>
+    <g class="sparks">
+      <circle cx="262" cy="376" r="2" />
+      <circle cx="304" cy="366" r="1.7" />
+      <circle cx="238" cy="390" r="1.6" />
+      <circle cx="326" cy="384" r="1.9" />
+    </g>
+    <rect class="bark" x="222" y="446" width="116" height="15" rx="7.5" transform="rotate(-9 280 453)" />
+    <rect class="bark" x="222" y="446" width="116" height="15" rx="7.5" transform="rotate(9 280 453)" />
+    <g class="stones">
+      <ellipse cx="196" cy="460" rx="17" ry="11" />
+      <ellipse cx="364" cy="460" rx="17" ry="11" />
+      <ellipse cx="226" cy="474" rx="18" ry="11" />
+      <ellipse cx="334" cy="474" rx="18" ry="11" />
+      <ellipse cx="262" cy="480" rx="17" ry="10" />
+      <ellipse cx="299" cy="480" rx="18" ry="10" />
+    </g>
+  </svg>
+  <figcaption>{{ content().legenda }}</figcaption>
+</figure>

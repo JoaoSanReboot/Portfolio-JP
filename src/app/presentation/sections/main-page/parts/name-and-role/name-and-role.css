@@ -1,0 +1,153 @@
+/* Título da página principal (app-name-and-role): nome, chapéu, cargo e o "L" do tiro perdido */
+
+/* ---------- Nome ---------- */
+
+/* O nome termina acima da linha do trem: o trem nunca passa por trás dele. */
+.fr-name {
+  position: absolute;
+  left: 64px;
+  top: 212px;
+  z-index: 3;
+  margin: 0;
+  font: 400 168px/0.9 var(--f-display);
+  text-transform: uppercase;
+  color: var(--c-ink);
+  white-space: nowrap;
+}
+/* Cada linha corta as letras que sobem na entrada. O padding dá espaço ao til e ao chapéu (em cima) e à cauda
+   do J (embaixo) dentro do overflow:hidden; a margem negativa compensa para não mudar o layout. */
+.fr-name .ln {
+  display: block;
+  overflow: hidden;
+  padding: 0.5em 0.4em 0.14em 8px;
+  margin: -0.5em -0.4em -0.14em -8px;
+}
+.fr-name .ch {
+  display: inline-block;
+  position: relative; /* referência do chapéu */
+}
+/* Chapéu de cowboy inclinado pousado na ponta (lado direito) do "O" de Pedro. Em em: acompanha o tamanho
+   do nome (desktop e mobile) e sobe junto com a letra na entrada. */
+.fr-hat {
+  position: absolute;
+  left: 74%;
+  top: -0.22em;
+  width: 0.95em;
+  height: 0.475em;
+  translate: -50% 0;
+  rotate: 24deg;
+  fill: currentColor;
+  overflow: visible;
+}
+
+/* ---------- Cargo ---------- */
+
+/* Logo abaixo do nome, com um fio que completa a largura do nome */
+.fr-role {
+  position: absolute;
+  left: 68px;
+  top: 548px;
+  z-index: 3;
+  width: 710px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  font: 600 26px/1 var(--f-sans);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--c-ink);
+  white-space: nowrap;
+}
+.fr-role::after {
+  content: '';
+  flex: 1;
+  height: 3px;
+  background: currentColor;
+}
+
+/* ---------- O "L" do tiro perdido ---------- */
+
+/* Pendurado (.is-hanging): perdeu o prego de baixo e gira em torno do topo da haste, cai balançando e fica
+   num vai e vem contínuo. Consertado (.is-fixing): volta do ângulo em que estava (--from, lido em name-and-role.ts)
+   para o lugar, com um tranco. */
+.fr-l {
+  display: inline-block;
+  transform-origin: 0.12em 0.14em;
+}
+.fr-l.is-hanging {
+  rotate: 24deg;
+  animation:
+    fr-l-drop 1.8s ease-out both,
+    fr-l-sway 2.6s ease-in-out 1.8s infinite;
+}
+.fr-l.is-fixing {
+  animation: fr-l-fix 0.7s var(--e-out) both;
+}
+@keyframes fr-l-drop {
+  0% {
+    rotate: 0deg;
+  }
+  10% {
+    rotate: -6deg;
+  }
+  32% {
+    rotate: 62deg;
+  }
+  52% {
+    rotate: 8deg;
+  }
+  70% {
+    rotate: 38deg;
+  }
+  86% {
+    rotate: 18deg;
+  }
+  100% {
+    rotate: 24deg;
+  }
+}
+@keyframes fr-l-sway {
+  0%,
+  100% {
+    rotate: 24deg;
+  }
+  25% {
+    rotate: 31deg;
+  }
+  75% {
+    rotate: 17deg;
+  }
+}
+@keyframes fr-l-fix {
+  0% {
+    rotate: var(--from, 24deg);
+  }
+  40% {
+    rotate: -8deg;
+  }
+  70% {
+    rotate: 3deg;
+  }
+  100% {
+    rotate: 0deg;
+  }
+}
+
+/* ---------- Mobile ---------- */
+
+.fr-main-page[data-mode='m'] .fr-name {
+  left: 604px;
+  top: 352px;
+  font-size: 84px;
+}
+.fr-main-page[data-mode='m'] .fr-role {
+  left: 606px;
+  top: 522px;
+  width: 354px;
+  gap: 12px;
+  font-size: 13px;
+}
+.fr-main-page[data-mode='m'] .fr-role::after {
+  height: 2px;
+}

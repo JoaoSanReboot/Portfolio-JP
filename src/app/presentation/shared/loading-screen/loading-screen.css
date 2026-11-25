@@ -1,0 +1,197 @@
+/*
+ * Tela de carregamento (#fr-loading). A marcação fica em src/index.html (precisa aparecer antes do Angular
+ * carregar); este CSS entra no bundle global pelo angular.json; a saída é comandada por loading-screen.ts.
+ *
+ * Sequência:
+ *   1. As 6 balas, em fila embaixo do revólver, sobem uma por vez e entram no tambor; a cada uma o tambor
+ *      gira um "clique" (as caneluras andam uma posição).
+ *   2. Se a página ainda não estiver pronta, o tambor segue girando devagar.
+ *   3. .is-done: o cão arma, cai e o revólver dispara (clarão + leve coice).
+ *   4. .is-leaving: a tela sobe como uma cortina, revelando a página principal, que começa a entrada junto.
+ */
+
+.fr-loading {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: var(--c-paper);
+  color: var(--c-ink);
+}
+/* Só para leitores de tela */
+.fr-loading-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.fr-loading-art {
+  width: min(320px, 72vw);
+  height: auto;
+  overflow: visible;
+}
+
+/* ---------- Revólver ---------- */
+
+.fr-loading .ink {
+  fill: var(--c-ink);
+}
+.fr-loading .wood {
+  fill: var(--c-muted);
+}
+.fr-loading .stroke {
+  fill: none;
+  stroke: var(--c-ink);
+  stroke-linecap: round;
+}
+/* Recorte claro em volta do tambor, para separá-lo da armação */
+.fr-loading .cyl-edge {
+  fill: none;
+  stroke: var(--c-paper);
+  stroke-width: 1.6;
+}
+.fr-loading .screw {
+  fill: var(--c-paper);
+}
+/* Caneluras do tambor: linhas claras que andam uma posição (6.5) a cada clique */
+.fr-loading .flutes line {
+  stroke: var(--c-paper);
+  stroke-width: 1.4;
+  opacity: 0.45;
+}
+.fr-loading .flutes {
+  animation:
+    fr-loading-click 0.16s var(--e-out) 0.6s 6,
+    fr-loading-click 0.7s var(--e-out) 1.6s infinite;
+}
+/* Cão: gira em torno do pino (47, 28) */
+.fr-loading .hammer {
+  transform-box: view-box;
+  transform-origin: 47px 28px;
+}
+/* Clarão na boca do cano (aparece só no disparo) */
+.fr-loading .muzzle {
+  fill: var(--c-ochre);
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: 0 50%;
+}
+/* O revólver inteiro, para o coice (gira em torno da empunhadura) */
+.fr-loading .gun {
+  transform-box: view-box;
+  transform-origin: 40px 80px;
+}
+
+/* ---------- Balas ---------- */
+
+.fr-loading .tip {
+  fill: var(--c-muted);
+}
+.fr-loading .case {
+  fill: var(--c-ochre);
+}
+/* Cada bala sobe girando e entra por trás do revólver (que é desenhado por cima).
+   --i = ordem; --dx/--dy = caminho até a traseira do tambor (no index.html). */
+.fr-loading .bullet {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: fr-loading-load 0.45s cubic-bezier(0.5, 0, 0.3, 1) both;
+  animation-delay: calc(0.15s + var(--i) * 0.16s);
+}
+
+/* ---------- Saída ---------- */
+
+.fr-loading.is-done .hammer {
+  animation: fr-loading-cock 0.42s ease-in-out both;
+}
+.fr-loading.is-done .muzzle {
+  animation: fr-loading-flash 0.34s ease-out 0.3s both;
+}
+.fr-loading.is-done .gun {
+  animation: fr-loading-recoil 0.4s var(--e-out) 0.3s both;
+}
+.fr-loading.is-leaving {
+  transform: translateY(-100%);
+  transition: transform 0.85s cubic-bezier(0.7, 0, 0.2, 1);
+}
+
+@keyframes fr-loading-load {
+  0% {
+    transform: none;
+    opacity: 1;
+  }
+  40% {
+    transform: translate(calc(var(--dx) * 0.3), -30px) rotate(45deg);
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--dx), var(--dy)) rotate(90deg) scale(0.7);
+    opacity: 0;
+  }
+}
+@keyframes fr-loading-click {
+  0% {
+    transform: translateY(0);
+  }
+  60%,
+  100% {
+    transform: translateY(-6.5px);
+  }
+}
+@keyframes fr-loading-cock {
+  0% {
+    rotate: 0deg;
+  }
+  45%,
+  68% {
+    rotate: -34deg;
+  }
+  76%,
+  100% {
+    rotate: 0deg;
+  }
+}
+@keyframes fr-loading-flash {
+  0% {
+    opacity: 1;
+    scale: 0.4;
+  }
+  35% {
+    opacity: 1;
+    scale: 1.15;
+  }
+  100% {
+    opacity: 0;
+    scale: 1;
+  }
+}
+@keyframes fr-loading-recoil {
+  0%,
+  100% {
+    rotate: 0deg;
+  }
+  25% {
+    rotate: -5deg;
+  }
+}
+
+/* Movimento reduzido: sem animações; as balas já aparecem carregadas e a tela só some com um fade. */
+@media (prefers-reduced-motion: reduce) {
+  .fr-loading *,
+  .fr-loading.is-done * {
+    animation: none !important;
+  }
+  .fr-loading .bullet {
+    opacity: 0;
+  }
+  .fr-loading.is-leaving {
+    transform: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+}

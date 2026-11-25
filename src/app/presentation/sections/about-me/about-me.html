@@ -1,0 +1,22 @@
+<!-- Capítulo 1, "Sobre mim": título e texto à esquerda, fogueira à direita. -->
+<section class="fr-chapter fr-about" id="quem-sou" aria-labelledby="quem-sou-titulo">
+  <app-paper-texture />
+  <app-rail-divider [chapter]="1" [label]="content.trilho" />
+
+  <!-- --d = degrau da entrada -->
+  <div #opening class="fr-about-opening" appRevealOnScroll>
+    <div>
+      <h2 class="title" id="quem-sou-titulo" [attr.aria-label]="content.titulo">
+        @for (line of titleLines; track $index) {
+          <span class="ln"><span>{{ line }}</span></span>
+        }
+      </h2>
+      <div class="body">
+        @for (text of content.paragrafos; track $index) {
+          <p class="r" [style.--d]="$index + 2">{{ text }}</p>
+        }
+      </div>
+    </div>
+    <app-campfire-scene class="r" style="--d: 2" [content]="content.ilustracao" [reducedMotion]="reducedMotion" />
+  </div>
+</section>

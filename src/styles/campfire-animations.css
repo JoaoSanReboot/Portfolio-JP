@@ -1,0 +1,45 @@
+/*
+ * Animações de fogueira, usadas por mais de uma peça (cena do "Sobre mim" e fechamento de capítulo).
+ * O alcance se ajusta por variável no elemento: --steam-y, --spark-x e --spark-y.
+ */
+
+/* Chama: dança presa à base (defina o transform-origin no pé do fogo) */
+@keyframes fr-campfire-flick {
+  0% {
+    transform: scale(1, 1) skewX(0);
+  }
+  50% {
+    transform: scale(0.94, 1.08) skewX(-3deg);
+  }
+  100% {
+    transform: scale(1.04, 0.94) skewX(3deg);
+  }
+}
+/* Vapor: aparece, sobe e some */
+@keyframes fr-campfire-steam {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(var(--steam-y, -22px));
+  }
+}
+/* Faísca: salta do fogo e se apaga no ar */
+@keyframes fr-campfire-spark {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--spark-x, 10px), var(--spark-y, -60px));
+  }
+}

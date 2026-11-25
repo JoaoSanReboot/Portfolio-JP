@@ -1,0 +1,42 @@
+/* Trilho divisor (app-rail-divider). O host já é o contêiner. */
+.fr-rail-divider {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 44px 0 0;
+}
+/* Balas (número do capítulo) e nome, com o mesmo espaço do menu */
+.fr-rail-divider .fr-k {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  white-space: nowrap;
+}
+/* Dois trilhos (linhas em cima e embaixo) com os dormentes no meio */
+.fr-rail-divider i {
+  flex: 1;
+  height: 7px;
+  background:
+    linear-gradient(var(--c-line), var(--c-line)) 0 0 / 100% 1px no-repeat,
+    linear-gradient(var(--c-line), var(--c-line)) 0 100% / 100% 1px no-repeat,
+    repeating-linear-gradient(90deg, var(--c-line) 0 1.5px, transparent 1.5px 9px);
+  transform-origin: left;
+}
+/* O trilho se desenha ao entrar na tela */
+.fr-rail-divider:not(.is-seen) i {
+  transform: scaleX(0);
+}
+.fr-rail-divider.is-seen i {
+  animation: fr-rail-divider-draw 1.4s var(--e-out) both;
+}
+@keyframes fr-rail-divider-draw {
+  from {
+    transform: scaleX(0);
+  }
+}
+@media (max-width: 760px) {
+  .fr-rail-divider {
+    gap: 12px;
+    padding-top: 32px;
+  }
+}

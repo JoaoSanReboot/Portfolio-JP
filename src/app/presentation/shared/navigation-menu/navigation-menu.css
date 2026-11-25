@@ -1,0 +1,145 @@
+/*
+ * Navegação do site (app-navigation-menu).
+ * Tamanhos em px reais: a barra não escala com o palco da página principal.
+ */
+
+/* ---------- Barra do topo ---------- */
+
+.fr-navigation {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 20;
+  height: 88px;
+  padding: 0 44px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* sem logo: menu (e o botão mobile) à direita */
+}
+.fr-menu {
+  display: flex;
+  align-items: baseline;
+  gap: 36px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.fr-menu a {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 9px;
+  padding: 8px 0;
+  font: 500 14px/1 var(--f-sans);
+  color: var(--c-ink);
+}
+/* Sublinhado: aparece no hover e fica fixo no capítulo atual */
+.fr-menu a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s var(--e-out);
+}
+.fr-menu a:hover::after,
+.fr-menu a[aria-current]::after {
+  transform: scaleX(1);
+}
+/* No hover, as balas pulam uma após a outra */
+.fr-menu a:hover .fr-bullet {
+  transform: translateY(-3px);
+}
+
+/* Botão do menu mobile (só abaixo de 720px) */
+.fr-burger {
+  display: none;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  color: var(--c-ink);
+}
+.fr-burger svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* ---------- Menu em tela cheia (mobile) ---------- */
+
+.fr-sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 45;
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  padding: 104px 28px 28px;
+  background: var(--c-ground);
+  color: var(--c-on-ground);
+}
+.fr-sheet.open {
+  display: flex;
+  animation: fr-navigation-fade 0.25s;
+}
+.fr-sheet a {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  font: 400 26px/1.35 var(--f-display);
+  text-transform: uppercase;
+}
+/* Coluna fixa para as balas, assim os nomes ficam alinhados; ponta clara sobre o chão escuro */
+.fr-sheet .fr-chapter-bullets {
+  flex: none;
+  width: 52px;
+  gap: 3px;
+  --c-muted: var(--c-on-ground-muted);
+}
+.fr-sheet .fr-bullet {
+  height: 22px;
+}
+.fr-sheet .close {
+  position: absolute;
+  right: 16px;
+  top: 22px;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  color: var(--c-on-ground);
+}
+.fr-sheet .close svg {
+  width: 22px;
+  height: 22px;
+}
+@keyframes fr-navigation-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+/* ---------- Abaixo de 720px: só o botão ---------- */
+
+@media (max-width: 719.98px) {
+  .fr-navigation {
+    height: 68px;
+    padding: 0 14px 0 20px;
+  }
+  .fr-menu {
+    display: none;
+  }
+  .fr-burger {
+    display: grid;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fr-sheet.open {
+    animation: none;
+  }
+}

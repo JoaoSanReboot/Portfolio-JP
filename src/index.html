@@ -12,13 +12,14 @@
   <body>
     <!--
       Tela de carregamento: está aqui (e não num componente) para aparecer no primeiro instante, antes do
-      Angular baixar. Estilo e saída em src/app/presentation/shared/boot-screen/ (a Hero chama dismiss()).
+      Angular baixar. Estilo e saída em src/app/presentation/shared/loading-screen/ (a página principal
+      chama dismiss()).
       Revólver de ação simples olhando para a direita; as balas são desenhadas antes dele para entrarem
       "por trás" da armação. --dx/--dy levam o centro de cada bala até a traseira do tambor (64, 42).
     -->
-    <div id="fr-boot" class="fr-boot" role="status" aria-live="polite">
-      <span class="fr-boot-label">Carregando o portfólio…</span>
-      <svg class="fr-boot-art" viewBox="0 0 220 150" aria-hidden="true">
+    <div id="fr-loading" class="fr-loading" role="status" aria-live="polite">
+      <span class="fr-loading-label">Carregando o portfólio…</span>
+      <svg class="fr-loading-art" viewBox="0 0 220 150" aria-hidden="true">
         <!-- Fila de 6 balas (ponta de chumbo + cartucho de latão) -->
         <g transform="translate(67 112)"><g class="bullet" style="--i: 0; --dx: -7px; --dy: -81px"><path class="tip" d="M4 0 C6.6 1.6 7 4.6 7 8 H1 C1 4.6 1.4 1.6 4 0Z" /><rect class="case" x="1" y="8.8" width="6" height="11.2" /><rect class="case" x=".3" y="20.4" width="7.4" height="1.6" /></g></g>
         <g transform="translate(81 112)"><g class="bullet" style="--i: 1; --dx: -21px; --dy: -81px"><path class="tip" d="M4 0 C6.6 1.6 7 4.6 7 8 H1 C1 4.6 1.4 1.6 4 0Z" /><rect class="case" x="1" y="8.8" width="6" height="11.2" /><rect class="case" x=".3" y="20.4" width="7.4" height="1.6" /></g></g>
@@ -49,9 +50,9 @@
           <path class="stroke" stroke-width="3.2" d="M56 58 C55 76 80 77 81 58" />
           <path class="stroke" stroke-width="2.6" d="M66 58 Q63 64 67 70" />
           <!-- Tambor: corpo, caneluras que giram (recortadas no próprio tambor) e o recorte claro em volta -->
-          <clipPath id="fr-boot-cyl"><rect x="60" y="24" width="36" height="30" rx="5" /></clipPath>
+          <clipPath id="fr-loading-cyl"><rect x="60" y="24" width="36" height="30" rx="5" /></clipPath>
           <rect class="ink" x="60" y="24" width="36" height="30" rx="5" />
-          <g clip-path="url(#fr-boot-cyl)">
+          <g clip-path="url(#fr-loading-cyl)">
             <g class="flutes">
               <line x1="64" x2="92" y1="15" y2="15" /><line x1="64" x2="92" y1="21.5" y2="21.5" />
               <line x1="64" x2="92" y1="28" y2="28" /><line x1="64" x2="92" y1="34.5" y2="34.5" />

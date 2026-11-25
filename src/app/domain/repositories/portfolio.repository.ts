@@ -1,5 +1,6 @@
 import { Chapter } from '../entities/chapter';
 import { Profile } from '../entities/profile';
+import { AboutMeContent } from '../entities/about-me';
 
 /**
  * Contrato de acesso ao conteúdo do portfólio.
@@ -8,4 +9,5 @@ import { Profile } from '../entities/profile';
 export abstract class PortfolioRepository {
   abstract profile(): Profile;
   abstract chapters(): readonly Chapter[];
+  abstract aboutMe(): AboutMeContent;
 }

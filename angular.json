@@ -52,7 +52,7 @@
             ],
             "styles": [
               "src/styles/global.css",
-              "src/app/presentation/shared/boot-screen/boot-screen.css"
+              "src/app/presentation/shared/loading-screen/loading-screen.css"
             ]
           },
           "configurations": {

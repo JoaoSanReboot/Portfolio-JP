@@ -1,0 +1,22 @@
+/* Munição (app-chapter-bullets). O host já é o contêiner .fr-chapter-bullets. */
+.fr-chapter-bullets {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+}
+/* --k = índice da bala: no hover do link elas pulam uma após a outra (ver navigation-menu.css) */
+.fr-bullet {
+  display: block;
+  height: 14px;
+  width: auto;
+  aspect-ratio: 8 / 22;
+  overflow: visible;
+  transition: transform 0.35s var(--e-swing);
+  transition-delay: calc(var(--k) * 40ms);
+}
+.fr-bullet .tip {
+  fill: var(--c-muted);
+}
+.fr-bullet .case {
+  fill: var(--c-ochre);
+}

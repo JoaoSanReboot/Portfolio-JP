@@ -1,0 +1,9 @@
+/* Granulado de papel (app-paper-texture): multiplicado por cima da seção, bem sutil */
+.fr-paper-texture {
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  opacity: 0.12;
+}

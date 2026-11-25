@@ -1,0 +1,55 @@
+/* Chamadas para ação (app-action-buttons). Sobre o chão, texto só em on-ground. */
+.fr-action-buttons {
+  position: absolute;
+  left: 72px;
+  top: 770px;
+  z-index: 5;
+  display: flex;
+  gap: 28px;
+  align-items: center;
+}
+.fr-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  height: 52px;
+  padding: 0 26px;
+  font: 500 16px/1 var(--f-sans);
+  background: var(--c-rust);
+  color: var(--c-on-rust);
+  transition:
+    background-color 0.2s,
+    gap 0.3s var(--e-out);
+}
+.fr-btn svg {
+  width: 18px;
+  height: 18px;
+}
+.fr-btn:hover {
+  gap: 18px;
+  background: var(--c-on-ground);
+  color: var(--c-ground);
+}
+/* Link com sublinhado que "recolhe" no hover */
+.fr-link {
+  padding: 8px 0;
+  font: 500 16px/1 var(--f-sans);
+  color: var(--c-on-ground);
+  background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat;
+  transition: background-size 0.35s var(--e-out);
+}
+.fr-link:hover {
+  background-size: 0 1px;
+  background-position: 100% 100%;
+}
+
+/* Mobile */
+.fr-main-page[data-mode='m'] .fr-action-buttons {
+  left: 606px;
+  top: 762px;
+  gap: 24px;
+}
+.fr-main-page[data-mode='m'] .fr-btn {
+  height: 50px;
+  padding: 0 22px;
+}

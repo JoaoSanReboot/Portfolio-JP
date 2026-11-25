@@ -1,0 +1,31 @@
+<!-- Barra do topo. As classes `a a-navigation` deixam a página principal controlar a entrada (fade);
+     fora dela não têm efeito. -->
+<header class="fr-navigation a a-navigation">
+  <nav aria-label="Capítulos">
+    <ul class="fr-menu">
+      @for (chapter of chapters(); track chapter.anchor; let i = $index) {
+        <li>
+          <a
+            [href]="'#' + chapter.anchor"
+            [attr.aria-current]="chapter.anchor === current() ? 'true' : null"
+            (click)="go($event, chapter)"
+            ><app-chapter-bullets [count]="i + 1" />{{ chapter.label }}</a
+          >
+        </li>
+      }
+    </ul>
+  </nav>
+  <button #burger class="fr-burger" aria-label="Abrir menu" [attr.aria-expanded]="sheetOpen()" (click)="openSheet()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 9h16M4 15h16" /></svg>
+  </button>
+</header>
+
+<!-- Menu em tela cheia (mobile) -->
+<nav class="fr-sheet" [class.open]="sheetOpen()" aria-label="Menu">
+  <button #sheetClose class="close" aria-label="Fechar menu" (click)="closeSheet()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+  </button>
+  @for (chapter of chapters(); track chapter.anchor; let i = $index) {
+    <a [href]="'#' + chapter.anchor" (click)="go($event, chapter)"><app-chapter-bullets [count]="i + 1" />{{ chapter.label }}</a>
+  }
+</nav>

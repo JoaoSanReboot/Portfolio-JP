@@ -1,0 +1,4 @@
+/* Primeiro plano (app-ground-and-cactus). No mobile o cacto fica fora da janela visível. */
+.fr-main-page[data-mode='m'] .fr-cactus {
+  display: none;
+}

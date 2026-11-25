@@ -1,9 +1,0 @@
-/* Granulado de papel (app-grain): multiplicado por cima da seção, bem sutil */
-.fr-grain {
-  position: absolute;
-  inset: 0;
-  z-index: 12;
-  pointer-events: none;
-  mix-blend-mode: multiply;
-  opacity: 0.12;
-}
